@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Klasifikasi Konsumtif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+
+    <div class="stars"></div>
+
+    <header class="navbar">
+        <div class="container nav-wrapper">
+            <div class="logo">
+                <h2>Klasifikasi Konsumtif</h2>
+            </div>
+
+            <nav>
+                <a href="#beranda">Beranda</a>
+                <a href="#tentang">Tentang</a>
+                <a href="#fitur">Fitur</a>
+                <a href="#alur">Alur</a>
+                <a href="{{ url_for('auth.login') }}" class="nav-btn login">Login</a>
+                <a href="{{ url_for('auth.register') }}" class="nav-btn register">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="beranda">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <span class="badge">Smart Classification System</span>
+                <h1>Klasifikasi <span>Perilaku Konsumtif</span> E-Wallet & Paylater </h1>
+                <p>
+                    Analisis cepat perilaku konsumtif mahasiswa berdasarkan penggunaan
+                    e-wallet dan paylater menggunakan metode Decision Tree.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="{{ url_for('auth.login') }}" class="btn-primary">Masuk Sistem</a>
+                    <a href="#tentang" class="btn-secondary">Pelajari Sistem</a>
+                </div>
+            </div>
+
+            <div class="hero-panel">
+                <div class="info-card highlight">
+                    <h3>Ringkasan Sistem</h3>
+                    <p>
+                        Sistem mengolah data transaksi digital untuk menghasilkan
+                        kategori perilaku konsumtif: rendah, sedang, atau tinggi.
+                    </p>
+                </div>
+
+                <div class="hero-mini-grid">
+                    <div class="mini-box">
+                        <h4>Metode</h4>
+                        <p>Decision Tree</p>
+                    </div>
+                    <div class="mini-box">
+                        <h4>Data</h4>
+                        <p>E-wallet & Paylater</p>
+                    </div>
+                    <div class="mini-box">
+                        <h4>Output</h4>
+                        <p>Rendah, Sedang, Tinggi</p>
+                    </div>
+                    <div class="mini-box">
+                        <h4>Fokus</h4>
+                        <p>Analisis Perilaku</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="summary-section" id="tentang">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tentang Sistem</h2>
+                <p>
+                    Sistem ini dirancang untuk membantu proses analisis perilaku konsumtif
+                    secara objektif, ringkas, dan mudah dipahami.
+                </p>
+            </div>
+
+            <div class="summary-grid">
+                <div class="content-card">
+                    <h3>Klasifikasi</h3>
+                    <p>Mengelompokkan perilaku konsumtif ke dalam kategori tertentu.</p>
+                </div>
+
+                <div class="content-card">
+                    <h3>Pengolahan Data</h3>
+                    <p>Membantu mengelola data transaksi digital secara lebih terstruktur.</p>
+                </div>
+
+                <div class="content-card">
+                    <h3>Hasil Analisis</h3>
+                    <p>Menampilkan hasil klasifikasi dan informasi performa model.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="fitur">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fitur Utama</h2>
+                <p>Fitur inti yang mendukung proses klasifikasi perilaku konsumtif.</p>
+            </div>
+
+            <div class="result-grid">
+                <div class="result-card">
+                    <h3>Input Data</h3>
+                    <p>Masukkan dan kelola data training maupun data uji dengan mudah.</p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Klasifikasi Data</h3>
+                    <p>Data diproses menggunakan metode Decision Tree secara otomatis.</p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Visualisasi Hasil</h3>
+                    <p>Hasil analisis disajikan dalam tampilan yang jelas dan informatif.</p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Laporan Ringkas</h3>
+                    <p>Pengguna dapat melihat ringkasan hasil klasifikasi sebagai bahan analisis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="workflow-section" id="alur">
+        <div class="container">
+            <div class="section-title">
+                <h2>Alur Sistem</h2>
+                <p>Proses sederhana dari data masuk hingga hasil klasifikasi ditampilkan.</p>
+            </div>
+
+            <div class="workflow-grid">
+                <div class="step-card">
+                    <span>01</span>
+                    <h3>Input Data</h3>
+                    <p>Pengguna memasukkan data yang akan dianalisis.</p>
+                </div>
+
+                <div class="step-card">
+                    <span>02</span>
+                    <h3>Proses Model</h3>
+                    <p>Sistem memproses data menggunakan algoritma Decision Tree.</p>
+                </div>
+
+                <div class="step-card">
+                    <span>03</span>
+                    <h3>Hasil</h3>
+                    <p>Sistem menampilkan kategori perilaku konsumtif dan ringkasan analisis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>FAQ</h2>
+                <p>Pertanyaan singkat seputar sistem klasifikasi.</p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3>Apa fungsi sistem ini?</h3>
+                    <p>Sistem digunakan untuk menganalisis perilaku konsumtif berbasis data Pengguna E-wallet & Paylater .</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Metode apa yang digunakan?</h3>
+                    <p>Sistem menggunakan metode Decision Tree untuk melakukan proses klasifikasi.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Apa hasil akhirnya?</h3>
+                    <p>Hasil akhir berupa kategori perilaku konsumtif rendah, sedang, atau tinggi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Mulai Gunakan Sistem</h2>
+                <p>Akses sistem untuk mengelola data dan melihat hasil klasifikasi secara langsung.</p>
+                <a href="{{ url_for('auth.login') }}" class="btn-primary">Masuk Sekarang</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Dwi Nita Maulida | Teknik Informatika FTII UHAMKA</p>
+        </div>
+    </footer>
+
+</body>
+</html>

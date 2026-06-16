@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Decision Tree C4.5</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/decision_tree.css') }}">
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <h2>Sistem Konsumtif</h2>
+
+            <button class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <a href="{{ url_for('dashboard.home') }}">
+            <i class="fa-solid fa-house"></i>
+            <span>Dashboard</span>
+        </a>
+
+        {% if session.get('role') == 'admin' %}
+
+        <a href="{{ url_for('dataset.dataset_training') }}" class="active">
+            <i class="fa-solid fa-database"></i>
+            <span>Dataset Training</span>
+        </a>
+
+        <a href="{{ url_for('ml.decision_tree') }}">
+            <i class="fa-solid fa-code-branch"></i>
+            <span>Decision Tree</span>
+        </a>
+
+        {% endif %}
+
+        <a href="{{ url_for('dataset.dataset_pengguna') }}">
+            <i class="fa-solid fa-users"></i>
+            <span>Dataset Pengguna</span>
+        </a>
+
+        <a href="{{ url_for('prediksi.prediksi') }}">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Prediksi</span>
+        </a>
+
+        <a href="{{ url_for('prediksi.hasil') }}">
+            <i class="fa-solid fa-square-poll-vertical"></i>
+            <span>Hasil</span>
+        </a>
+
+        <a href="{{ url_for('auth.logout') }}" class="logout-link">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+        </a>
+          </aside>
+
+    <main class="main">
+
+        <div class="page-header">
+
+            <h1>
+                Decision Tree C4.5
+            </h1>
+
+            <p>
+                Evaluasi Model Klasifikasi
+                Perilaku Konsumtif
+            </p>
+
+        </div>
+
+        {% if error %}
+
+        <div class="card">
+
+            <h3>Error</h3>
+
+            <p>
+                {{ error }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <div class="card">
+
+            <h2>
+                Hasil Evaluasi
+            </h2>
+
+          <div class="accuracy-wrapper">
+
+            <div class="acc-box testing-only">
+
+                <span>
+                    Akurasi Model Decision Tree C4.5
+                </span>
+
+                <h3>
+                    {{ acc_test }}%
+                </h3>
+
+                <p>
+                    Berdasarkan Data Testing
+                </p>
+
+            </div>
+
+        </div>
+                <div class="card">
+
+            <h2>
+                Ringkasan Model
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Total Data</th>
+
+                            <th>Data Latih</th>
+
+                            <th>Data Uji</th>
+
+                            <th>Metode</th>
+
+                            <th>Depth</th>
+
+                            <th>Leaf Node</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                {{ summary.total_data }}
+                            </td>
+
+                            <td>
+                                {{ summary.total_train }}
+                            </td>
+
+                            <td>
+                                {{ summary.total_test }}
+                            </td>
+
+                            <td>
+                                {{ summary.criterion }}
+                            </td>
+
+                            <td>
+                                {{ summary.max_depth }}
+                            </td>
+
+                            <td>
+                                {{ summary.leaf_nodes }}
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Distribusi Label
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Rendah</th>
+
+                            <th>Sedang</th>
+
+                            <th>Tinggi</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                {{ distribusi_label['Rendah'] }}
+                            </td>
+
+                            <td>
+                                {{ distribusi_label['Sedang'] }}
+                            </td>
+
+                            <td>
+                                {{ distribusi_label['Tinggi'] }}
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Download Data Splitting
+            </h2>
+
+            <p>
+
+                Download hasil pembagian
+                data latih dan data uji.
+
+            </p>
+
+            <a
+                href="{{ url_for('ml.download_splitting') }}"
+                class="btn-download"
+            >
+
+                Download Excel
+
+            </a>
+
+        </div>
+                <div class="card">
+
+            <h2>
+                Data Latih
+            </h2>
+
+            <p>
+                Total Data :
+                <b>
+                    {{ summary.total_train }}
+                </b>
+            </p>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>No</th>
+
+                            <th>Intensitas E-Wallet</th>
+
+                            <th>Aktivitas E-Wallet</th>
+
+                            <th>Intensitas Paylater</th>
+
+                            <th>Dampak Paylater</th>
+
+                            <th>Pengaruh Promo</th>
+
+                            <th>Sosial Lingkungan</th>
+
+                            <th>Media Gaya Hidup</th>
+
+                            <th>Kontrol Pengeluaran</th>
+
+                            <th>Kontrol Literasi</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in data_latih %}
+
+                        <tr>
+
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+                            <td>
+                                {{ item.intensitas_ewallet }}
+                            </td>
+
+                            <td>
+                                {{ item.aktivitas_ewallet }}
+                            </td>
+
+                            <td>
+                                {{ item.intensitas_paylater }}
+                            </td>
+
+                            <td>
+                                {{ item.dampak_paylater }}
+                            </td>
+
+                            <td>
+                                {{ item.pengaruh_promo }}
+                            </td>
+
+                            <td>
+                                {{ item.sosial_lingkungan }}
+                            </td>
+
+                            <td>
+                                {{ item.media_gayahidup }}
+                            </td>
+
+                            <td>
+                                {{ item.kontrol_pengeluaran }}
+                            </td>
+
+                            <td>
+                                {{ item.kontrol_literasi }}
+                            </td>
+
+                              <td>
+
+                            <span class="
+                            {% if item.status == 'Rendah' %}
+                            badge-rendah
+                            {% elif item.status == 'Sedang' %}
+                            badge-sedang
+                            {% elif item.status == 'Tinggi' %}
+                            badge-tinggi
+                            {% endif %}
+                            ">
+                            {{ item.status }}
+                            </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Data Uji
+            </h2>
+
+            <p>
+                Total Data :
+                <b>
+                    {{ summary.total_test }}
+                </b>
+            </p>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>No</th>
+
+                            <th>Intensitas E-Wallet</th>
+
+                            <th>Aktivitas E-Wallet</th>
+
+                            <th>Intensitas Paylater</th>
+
+                            <th>Dampak Paylater</th>
+
+                            <th>Pengaruh Promo</th>
+
+                            <th>Sosial Lingkungan</th>
+
+                            <th>Media Gaya Hidup</th>
+
+                            <th>Kontrol Pengeluaran</th>
+
+                            <th>Kontrol Literasi</th>
+
+                            <th>Status Asli</th>
+
+                            <th>Prediksi</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in data_uji %}
+
+                        <tr>
+
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+                            <td>
+                                {{ item.intensitas_ewallet }}
+                            </td>
+
+                            <td>
+                                {{ item.aktivitas_ewallet }}
+                            </td>
+
+                            <td>
+                                {{ item.intensitas_paylater }}
+                            </td>
+
+                            <td>
+                                {{ item.dampak_paylater }}
+                            </td>
+
+                            <td>
+                                {{ item.pengaruh_promo }}
+                            </td>
+
+                            <td>
+                                {{ item.sosial_lingkungan }}
+                            </td>
+
+                            <td>
+                                {{ item.media_gayahidup }}
+                            </td>
+
+                            <td>
+                                {{ item.kontrol_pengeluaran }}
+                            </td>
+
+                            <td>
+                                {{ item.kontrol_literasi }}
+                            </td>
+
+                           <td>
+
+                            <span class="
+                            {% if item.status == 'Rendah' %}
+                            badge-rendah
+                            {% elif item.status == 'Sedang' %}
+                            badge-sedang
+                            {% elif item.status == 'Tinggi' %}
+                            badge-tinggi
+                            {% endif %}
+                            ">
+                            {{ item.status }}
+                            </span>
+
+                            </td>
+
+                            <td>
+
+                            <span class="
+                            {% if item.prediksi == 'Rendah' %}
+                            badge-rendah
+                            {% elif item.prediksi == 'Sedang' %}
+                            badge-sedang
+                            {% elif item.prediksi == 'Tinggi' %}
+                            badge-tinggi
+                            {% endif %}
+                            ">
+                            {{ item.prediksi }}
+                            </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+             <div class="card">
+
+                <h2>Confusion Matrix</h2>
+
+                <pre>{{ cm }}</pre>
+
+            </div>
+
+        <div class="card">
+
+            <h2>
+                Classification Report
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Kelas</th>
+
+                            <th>Precision</th>
+
+                            <th>Recall</th>
+
+                            <th>F1 Score</th>
+
+                            <th>Support</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for label, data in report.items() %}
+
+                        <tr>
+
+                            <td>
+                                {{ label }}
+                            </td>
+
+                            <td>
+                                {{ data['precision'] }}
+                            </td>
+
+                            <td>
+                                {{ data['recall'] }}
+                            </td>
+
+                            <td>
+                                {{ data['f1-score'] }}
+                            </td>
+
+                            <td>
+                                {{ data['support'] }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Feature Importance C4.5
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Fitur</th>
+
+                            <th>Gain Ratio</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in feature_importance %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.feature }}
+                            </td>
+
+                            <td>
+                                {{ item.importance }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+                <div class="card">
+
+            <h2>
+                Rules Decision Tree C4.5
+            </h2>
+
+            <pre class="text-box">
+
+{{ rule_text }}
+
+            </pre>
+
+        </div>
+
+         <div class="card">
+
+            <h2>Pohon Keputusan (Gambar)</h2>
+
+            <img
+                src="{{ url_for('static', filename='tree.png') }}"
+                alt="Decision Tree"
+                style="width:100%;max-width:1400px;"
+            >
+
+        </div>
+
+        <div class="card">
+
+            <h2>Pohon Keputusan (Text)</h2>
+
+            <pre class="text-box">
+        {{ tree_visual }}
+            </pre>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Detail Node C4.5
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Node</th>
+
+                            <th>Feature</th>
+
+                            <th>Entropy</th>
+
+                            <th>Gain</th>
+
+                            <th>Split Info</th>
+
+                            <th>Gain Ratio</th>
+
+                            <th>Samples</th>
+
+                            <th>Label</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for node in node_details %}
+
+                        <tr>
+
+                            <td>
+                                {{ node.node_id }}
+                            </td>
+
+                            <td>
+                                {{ node.feature }}
+                            </td>
+
+                            <td>
+                                {{ node.entropy }}
+                            </td>
+
+                            <td>
+                                {{ node.gain }}
+                            </td>
+
+                            <td>
+                                {{ node.split_info }}
+                            </td>
+
+                            <td>
+                                {{ node.gain_ratio }}
+                            </td>
+
+                            <td>
+                                {{ node.samples }}
+                            </td>
+
+                            <td>
+                                {{ node.label }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+<script>
+
+function toggleSidebar(){
+
+    const sidebar =
+        document.querySelector(
+            ".sidebar"
+        );
+
+    sidebar.classList.toggle(
+        "active"
+    );
+}
+
+</script>
+
+</body>
+</html>
