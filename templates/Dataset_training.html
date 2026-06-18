@@ -1,333 +1,952 @@
-
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dataset Training | Sistem Konsumtif</title>
+    <meta charset="UTF-8">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>
+        Dataset Training | Sistem Konsumtif
+    </title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/dataset_training.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dataset_training.css') }}">
 
 </head>
 
 <body>
 
-<div class="wrapper">
+    <!-- FLOATING PARTICLES -->
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
+    <div class="floating-particles">
 
-        <div class="sidebar-header">
-            <h2>Sistem Konsumtif</h2>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
 
-            <button class="close-sidebar" onclick="toggleSidebar()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
+    </div>
 
-        <a href="{{ url_for('dashboard.home') }}">
-            <i class="fa-solid fa-house"></i>
-            <span>Dashboard</span>
-        </a>
+    <div class="wrapper">
 
-         {% if session.get('role') == 'admin' %}
+        <!-- ================= SIDEBAR ================= -->
 
-        <a href="{{ url_for('dataset.dataset_training') }}" class="active">
-            <i class="fa-solid fa-database"></i>
-            <span>Dataset Training</span>
-        </a>
+        <aside class="sidebar" id="sidebar">
 
-        <a href="{{ url_for('ml.decision_tree') }}">
-            <i class="fa-solid fa-code-branch"></i>
-            <span>Decision Tree</span>
-        </a>
+            <!-- SIDEBAR HEADER -->
 
-        {% endif %}
+            <div class="sidebar-header">
 
-        <a href="{{ url_for('dataset.dataset_pengguna') }}">
-            <i class="fa-solid fa-users"></i>
-            <span>Dataset Pengguna</span>
-        </a>
+                <div class="sidebar-logo">
 
-        <a href="{{ url_for('prediksi.prediksi') }}">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>Prediksi</span>
-        </a>
+                    <div class="logo-circle">
 
-        <a href="{{ url_for('prediksi.hasil') }}">
-            <i class="fa-solid fa-square-poll-vertical"></i>
-            <span>Hasil</span>
-        </a>
+                        <i class="fa-solid fa-chart-pie"></i>
 
-        <a href="{{ url_for('auth.logout') }}" class="logout-link">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
-        </a>
+                    </div>
 
-    </aside>
+                    <div>
 
-    <!-- MAIN -->
-    <main class="main" id="main">
+                        <h2>Sistem Konsumtif</h2>
 
-        <!-- TOPBAR -->
-        <header class="topbar">
+                        <small>Decision Tree C4.5</small>
 
-            <div class="topbar-left">
+                    </div>
 
-                <button class="menu-toggle" onclick="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>
+                </div>
+
+                <button
+                    class="close-sidebar"
+                    onclick="toggleSidebar()">
+
+                    <i class="fa-solid fa-xmark"></i>
+
                 </button>
 
-                <div>
-                    <h3>Dataset Training</h3>
-
-                    <p>
-                        Pengelolaan data training
-                        untuk pembentukan model klasifikasi
-                    </p>
-                </div>
-
             </div>
+<!-- ================= MENU ================= -->
 
-            <div class="user-box">
-                <i class="fa-solid fa-user"></i>
+<a href="{{ url_for('dashboard.home') }}">
 
-                <span>
-                    {{ session.get('username', 'Peneliti') }}
-                </span>
-            </div>
+    <i class="fa-solid fa-house"></i>
 
-        </header>
+    <span>Dashboard</span>
 
-        <section class="content">
+</a>
 
-            <!-- IMPORT -->
-            <div class="box">
+{% if session.get('role') == 'admin' %}
 
-                <div class="box-header">
+<a href="{{ url_for('dataset.dataset_training') }}"
+   class="active">
 
-                    <div>
-                        <h3>Import Dataset Training</h3>
+    <i class="fa-solid fa-database"></i>
 
-                        <p>
-                            Dataset training digunakan
-                            untuk melatih model Decision Tree.
-                        </p>
-                    </div>
+    <span>Dataset Training</span>
 
-                    <div class="box-icon">
-                        <i class="fa-solid fa-file-arrow-up"></i>
-                    </div>
+</a>
 
-                </div>
+<a href="{{ url_for('ml.decision_tree') }}">
 
-                <form
-                    action="{{ url_for('dataset.import_training') }}"
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="upload-form"
-                >
+    <i class="fa-solid fa-code-branch"></i>
 
-                    <input
-                        type="file"
-                        name="file"
-                        accept=".csv"
-                        required
-                    >
+    <span>Decision Tree</span>
 
-                    <button type="submit" class="btn btn-primary">
+</a>
 
-                        <i class="fa-solid fa-upload"></i>
+{% endif %}
 
-                        Import Dataset
+<a href="{{ url_for('dataset.dataset_pengguna') }}">
 
-                    </button>
+    <i class="fa-solid fa-users"></i>
 
-                </form>
+    <span>Dataset Pengguna</span>
 
-                <p class="helper-text">
+</a>
 
-                    Format CSV:
+<a href="{{ url_for('prediksi.prediksi') }}">
 
-                    <b>
-                    nama,
-                    intensitas_ewallet,
-                    aktivitas_ewallet,
-                    intensitas_paylater,
-                    dampak_paylater,
-                    pengaruh_promo,
-                    sosial_lingkungan,
-                    media_gayahidup,
-                    kontrol_pengeluaran,
-                    kontrol_literasi,
-                    status
-                    </b>
+    <i class="fa-solid fa-brain"></i>
 
-                </p>
+    <span>Prediksi</span>
 
-            </div>
+</a>
 
-            <!-- TABLE -->
-            <div class="box">
+<a href="{{ url_for('prediksi.hasil') }}">
 
-                <div class="box-header">
+    <i class="fa-solid fa-chart-column"></i>
 
-                    <div>
+    <span>Hasil</span>
 
-                        <h3>Data Training Tersimpan</h3>
+</a>
 
-                        <p>
-                            Data training digunakan
-                            untuk pembentukan model klasifikasi.
-                        </p>
+<a href="{{ url_for('auth.logout') }}"
+   class="logout-link">
 
-                    </div>
+    <i class="fa-solid fa-right-from-bracket"></i>
 
-                    <div class="box-icon">
-                        <i class="fa-solid fa-table"></i>
-                    </div>
+    <span>Logout</span>
 
-                </div>
+</a>
 
-                <div class="table-wrapper">
+<!-- ================= STATUS ================= -->
 
-                    <table>
+<div class="sidebar-status">
 
-                        <thead>
+    <div class="status-dot"></div>
 
-                            <tr>
-
-                                <th>No</th>
-                                <th>Nama</th>
-
-                                <th>Intensitas E-Wallet</th>
-
-                                <th>Aktivitas E-Wallet</th>
-
-                                <th>Intensitas Paylater</th>
-
-                                <th>Dampak Paylater</th>
-
-                                <th>Pengaruh Promo</th>
-
-                                <th>Sosial Lingkungan</th>
-
-                                <th>Media & Gaya Hidup</th>
-
-                                <th>Kontrol Pengeluaran</th>
-
-                                <th>Kontrol Literasi</th>
-
-                                <th>Status</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            {% for d in data %}
-
-                            <tr>
-
-                                <td>{{ loop.index }}</td>
-
-                                <td>{{ d.nama or '-' }}</td>
-
-                                <td>{{ d.intensitas_ewallet or '-' }}</td>
-
-                                <td>{{ d.aktivitas_ewallet or '-' }}</td>
-
-                                <td>{{ d.intensitas_paylater or '-' }}</td>
-
-                                <td>{{ d.dampak_paylater or '-' }}</td>
-
-                                <td>{{ d.pengaruh_promo or '-' }}</td>
-
-                                <td>{{ d.sosial_lingkungan or '-' }}</td>
-
-                                <td>{{ d.media_gayahidup or '-' }}</td>
-
-                                <td>{{ d.kontrol_pengeluaran or '-' }}</td>
-
-                                <td>{{ d.kontrol_literasi or '-' }}</td>
-
-                                <td>
-
-                                    {% set label = d.status|trim|lower if d.status else '' %}
-
-                                    {% if label == 'rendah' %}
-
-                                    <span class="badge badge-rendah">
-                                        Rendah
-                                    </span>
-
-                                    {% elif label == 'sedang' %}
-
-                                    <span class="badge badge-sedang">
-                                        Sedang
-                                    </span>
-
-                                    {% elif label == 'tinggi' %}
-
-                                    <span class="badge badge-tinggi">
-                                        Tinggi
-                                    </span>
-
-                                    {% endif %}
-
-                                </td>
-
-                            </tr>
-
-                            {% else %}
-
-                            <tr>
-
-                                <td colspan="12" class="empty">
-
-                                    Belum ada data training
-
-                                </td>
-
-                            </tr>
-
-                            {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+    <span>Sistem Aktif</span>
 
 </div>
 
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main" id="main">
+<!-- ================= TOPBAR ================= -->
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+            class="menu-toggle"
+            onclick="toggleSidebar()">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <div>
+
+            <h3>
+                Dataset Training
+            </h3>
+
+            <p>
+                Pengelolaan data training untuk pembentukan model klasifikasi
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <!-- CLOCK -->
+
+        <div class="live-clock">
+
+            <i class="fa-regular fa-clock"></i>
+
+            <span id="liveClock">
+                00:00:00
+            </span>
+
+        </div>
+
+        <!-- DATE -->
+
+        <div class="live-date">
+
+            <i class="fa-regular fa-calendar"></i>
+
+            <span id="liveDate">
+                Loading...
+            </span>
+
+        </div>
+
+        <!-- DARK MODE -->
+
+        <button
+            id="themeToggle"
+            class="theme-toggle">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+        <!-- USER -->
+
+        <div class="user-box">
+
+            <div class="user-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <div class="user-info">
+
+                <span class="user-name">
+
+                    {{ session.get('username', 'Peneliti') }}
+
+                </span>
+
+                <small>
+                    Online
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ================= CONTENT ================= -->
+
+<section class="content">
+<!-- ================= WELCOME ================= -->
+
+<div class="welcome-banner">
+
+    <div class="welcome-left">
+
+        <div class="welcome-badge">
+
+            <i class="fa-solid fa-database"></i>
+
+            Dataset Training Aktif
+
+        </div>
+
+        <h2 id="greeting">
+
+            Selamat Datang
+
+        </h2>
+
+        <p>
+
+            Kelola dataset training untuk membangun model
+            klasifikasi perilaku konsumtif menggunakan
+            algoritma Decision Tree C4.5. Dataset yang baik
+            akan menghasilkan model klasifikasi yang lebih akurat.
+
+        </p>
+
+    </div>
+
+    <div class="welcome-right">
+
+        <i class="fa-solid fa-brain"></i>
+
+    </div>
+
+</div>
+
+<!-- ================= INFO DATASET ================= -->
+
+<div class="dataset-info">
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    <span>
+
+        Dataset training digunakan sebagai data utama untuk
+        proses pembentukan pohon keputusan Decision Tree C4.5.
+
+    </span>
+
+</div>
+
+<!-- ================= STATISTIK ================= -->
+
+<div class="stats-grid">
+
+    <!-- TOTAL DATA -->
+
+    <div class="stat-mini">
+
+        <div class="stat-icon blue">
+
+            <i class="fa-solid fa-database"></i>
+
+        </div>
+
+        <h3>
+
+            {{ data|length }}
+
+        </h3>
+
+        <p>
+
+            Total Dataset
+
+        </p>
+
+    </div>
+
+    <!-- FORMAT -->
+
+    <div class="stat-mini">
+
+        <div class="stat-icon green">
+
+            <i class="fa-solid fa-file-csv"></i>
+
+        </div>
+
+        <h3>
+
+            CSV
+
+        </h3>
+
+        <p>
+
+            Format Dataset
+
+        </p>
+
+    </div>
+
+    <!-- ALGORITMA -->
+
+    <div class="stat-mini">
+
+        <div class="stat-icon orange">
+
+            <i class="fa-solid fa-code-branch"></i>
+
+        </div>
+
+        <h3>
+
+            C4.5
+
+        </h3>
+
+        <p>
+
+            Decision Tree
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ================= IMPORT DATASET ================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
+                Import Dataset Training
+            </h3>
+
+            <p>
+                Upload file CSV untuk digunakan
+                sebagai data training model.
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-file-arrow-up"></i>
+
+        </div>
+
+    </div>
+
+    <form
+        action="{{ url_for('dataset.import_training') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        class="upload-form">
+
+        <div class="upload-area">
+
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+            <h4>
+                Pilih File CSV
+            </h4>
+
+            <p>
+                Klik area ini untuk memilih file
+            </p>
+
+            <input
+                type="file"
+                name="file"
+                id="fileInput"
+                accept=".csv"
+                required>
+
+        </div>
+
+        <div
+            class="selected-file"
+            id="fileName">
+
+            Belum ada file dipilih
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary">
+
+            <i class="fa-solid fa-upload"></i>
+
+            Import Dataset
+
+        </button>
+
+    </form>
+
+    <div class="format-box">
+
+        <h4>
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Format CSV
+
+        </h4>
+
+        <p>
+
+            nama,
+            intensitas_ewallet,
+            aktivitas_ewallet,
+            intensitas_paylater,
+            dampak_paylater,
+            pengaruh_promo,
+            sosial_lingkungan,
+            media_gayahidup,
+            kontrol_pengeluaran,
+            kontrol_literasi,
+            status
+
+        </p>
+
+    </div>
+
+</div>
+<!-- ================= DATA TRAINING ================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
+                Data Training Tersimpan
+            </h3>
+
+            <p>
+                Dataset yang digunakan untuk proses
+                pembentukan model klasifikasi.
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-table"></i>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="table-tools">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama atau data...">
+
+        </div>
+
+        <div class="data-count">
+
+            <i class="fa-solid fa-database"></i>
+
+            <span>
+                {{ data|length }} Data
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+        <table id="trainingTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Intensitas E-Wallet</th>
+                    <th>Aktivitas E-Wallet</th>
+                    <th>Intensitas Paylater</th>
+                    <th>Dampak Paylater</th>
+                    <th>Pengaruh Promo</th>
+                    <th>Sosial Lingkungan</th>
+                    <th>Media & Gaya Hidup</th>
+                    <th>Kontrol Pengeluaran</th>
+                    <th>Kontrol Literasi</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for d in data %}
+
+                <tr>
+
+                    <td>{{ loop.index }}</td>
+
+                    <td>{{ d.nama or '-' }}</td>
+
+                    <td>{{ d.intensitas_ewallet or '-' }}</td>
+
+                    <td>{{ d.aktivitas_ewallet or '-' }}</td>
+
+                    <td>{{ d.intensitas_paylater or '-' }}</td>
+
+                    <td>{{ d.dampak_paylater or '-' }}</td>
+
+                    <td>{{ d.pengaruh_promo or '-' }}</td>
+
+                    <td>{{ d.sosial_lingkungan or '-' }}</td>
+
+                    <td>{{ d.media_gayahidup or '-' }}</td>
+
+                    <td>{{ d.kontrol_pengeluaran or '-' }}</td>
+
+                    <td>{{ d.kontrol_literasi or '-' }}</td>
+
+                    <td>
+
+                        {% set label = d.status|trim|lower if d.status else '' %}
+
+                        {% if label == 'rendah' %}
+
+                        <span class="badge badge-rendah">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Rendah
+
+                        </span>
+
+                        {% elif label == 'sedang' %}
+
+                        <span class="badge badge-sedang">
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                            Sedang
+
+                        </span>
+
+                        {% elif label == 'tinggi' %}
+
+                        <span class="badge badge-tinggi">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            Tinggi
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge badge-default">
+
+                            Tidak Ada
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="12">
+
+                        <div class="empty-state">
+
+                            <i class="fa-solid fa-folder-open"></i>
+
+                            <h3>
+                                Belum Ada Dataset
+                            </h3>
+
+                            <p>
+                                Silakan import file CSV terlebih dahulu
+                                untuk mulai membangun model Decision Tree.
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
 <script>
+
+/* ==========================
+   TOGGLE SIDEBAR
+========================== */
 
 function toggleSidebar(){
 
     document
-        .getElementById('sidebar')
-        .classList
-        .toggle('sidebar-hidden');
+    .getElementById("sidebar")
+    .classList
+    .toggle("sidebar-hidden");
 
     document
-        .getElementById('main')
-        .classList
-        .toggle('main-full');
+    .getElementById("main")
+    .classList
+    .toggle("main-full");
+
+}
+
+/* ==========================
+   GREETING
+========================== */
+
+const greeting =
+document.getElementById(
+"greeting"
+);
+
+if(greeting){
+
+    const hour =
+    new Date().getHours();
+
+    if(hour < 11){
+
+        greeting.innerHTML =
+        "☀️ Selamat Pagi";
+
+    }
+
+    else if(hour < 15){
+
+        greeting.innerHTML =
+        "🌤️ Selamat Siang";
+
+    }
+
+    else if(hour < 18){
+
+        greeting.innerHTML =
+        "🌇 Selamat Sore";
+
+    }
+
+    else{
+
+        greeting.innerHTML =
+        "🌙 Selamat Malam";
+
+    }
+
+}
+
+/* ==========================
+   LIVE CLOCK
+========================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    const time =
+        now.toLocaleTimeString(
+            'id-ID',
+            {
+                hour:'2-digit',
+                minute:'2-digit',
+                second:'2-digit'
+            }
+        );
+
+    const date =
+        now.toLocaleDateString(
+            'id-ID',
+            {
+                weekday:'long',
+                day:'numeric',
+                month:'long',
+                year:'numeric'
+            }
+        );
+
+    const clock =
+    document.getElementById(
+    "liveClock"
+    );
+
+    const liveDate =
+    document.getElementById(
+    "liveDate"
+    );
+
+    if(clock){
+        clock.textContent = time;
+    }
+
+    if(liveDate){
+        liveDate.textContent = date;
+    }
+
+}
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+// ================= DARK MODE =================
+
+const themeToggle =
+document.getElementById(
+'themeToggle'
+);
+
+const currentTheme =
+localStorage.getItem(
+'theme'
+);
+
+if(currentTheme === 'dark'){
+
+    document.body.classList.add(
+        'dark-mode'
+    );
+
+    if(themeToggle){
+
+        themeToggle.innerHTML =
+        '<i class="fa-solid fa-sun"></i>';
+
+    }
+
+}
+
+if(themeToggle){
+
+    themeToggle.addEventListener(
+    'click',
+
+    ()=>{
+
+        document.body.classList.toggle(
+            'dark-mode'
+        );
+
+        if(
+            document.body.classList.contains(
+                'dark-mode'
+            )
+        ){
+
+            localStorage.setItem(
+                'theme',
+                'dark'
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-sun"></i>';
+
+        }
+
+        else{
+
+            localStorage.setItem(
+                'theme',
+                'light'
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-moon"></i>';
+
+        }
+
+    });
+
+}
+
+
+/* ==========================
+   FILE PREVIEW
+========================== */
+
+const fileInput =
+document.getElementById(
+"fileInput"
+);
+
+const fileName =
+document.getElementById(
+"fileName"
+);
+
+if(fileInput){
+
+    fileInput.addEventListener(
+    "change",
+
+    function(){
+
+        if(this.files.length > 0){
+
+            fileName.innerHTML =
+            "📄 " +
+            this.files[0].name;
+
+        }
+
+    });
+
+}
+
+/* ==========================
+   SEARCH TABLE
+========================== */
+
+const searchInput =
+document.getElementById(
+"searchInput"
+);
+
+if(searchInput){
+
+    searchInput.addEventListener(
+    "keyup",
+
+    function(){
+
+        const keyword =
+        this.value.toLowerCase();
+
+        const rows =
+        document.querySelectorAll(
+        "#trainingTable tbody tr"
+        );
+
+        rows.forEach(row=>{
+
+            const text =
+            row.innerText
+            .toLowerCase();
+
+            row.style.display =
+
+            text.includes(keyword)
+            ? ""
+            : "none";
+
+        });
+
+    });
+
 }
 
 </script>
