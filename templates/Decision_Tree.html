@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Decision Tree C4.5</title>
+    <meta charset="UTF-8">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>
+        Decision Tree C4.5 | Sistem Konsumtif
+    </title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/decision_tree.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/decision_tree.css') }}">
 
 </head>
 
@@ -20,775 +27,1302 @@ href="{{ url_for('static', filename='css/decision_tree.css') }}">
 
 <div class="wrapper">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
+<!-- =========================================
+SIDEBAR
+========================================= -->
 
-        <div class="sidebar-header">
-            <h2>Sistem Konsumtif</h2>
+<aside class="sidebar" id="sidebar">
 
-            <button class="close-sidebar" onclick="toggleSidebar()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    <div class="sidebar-header">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-circle">
+
+                <i class="fa-solid fa-code-branch"></i>
+
+            </div>
+
+            <div>
+
+                <h2>Sistem Konsumtif</h2>
+
+                <small>Decision Tree C4.5</small>
+
+            </div>
+
         </div>
 
-        <a href="{{ url_for('dashboard.home') }}">
-            <i class="fa-solid fa-house"></i>
-            <span>Dashboard</span>
-        </a>
+        <button
+            class="close-sidebar"
+            onclick="toggleSidebar()">
 
-        {% if session.get('role') == 'admin' %}
+            <i class="fa-solid fa-xmark"></i>
 
-        <a href="{{ url_for('dataset.dataset_training') }}" class="active">
-            <i class="fa-solid fa-database"></i>
-            <span>Dataset Training</span>
-        </a>
+        </button>
 
-        <a href="{{ url_for('ml.decision_tree') }}">
-            <i class="fa-solid fa-code-branch"></i>
-            <span>Decision Tree</span>
-        </a>
+    </div>
 
-        {% endif %}
+    <a href="{{ url_for('dashboard.home') }}">
 
-        <a href="{{ url_for('dataset.dataset_pengguna') }}">
-            <i class="fa-solid fa-users"></i>
-            <span>Dataset Pengguna</span>
-        </a>
+        <i class="fa-solid fa-house"></i>
 
-        <a href="{{ url_for('prediksi.prediksi') }}">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>Prediksi</span>
-        </a>
+        <span>Dashboard</span>
 
-        <a href="{{ url_for('prediksi.hasil') }}">
-            <i class="fa-solid fa-square-poll-vertical"></i>
-            <span>Hasil</span>
-        </a>
+    </a>
 
-        <a href="{{ url_for('auth.logout') }}" class="logout-link">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
-        </a>
-          </aside>
+    {% if session.get('role') == 'admin' %}
 
-    <main class="main">
+    <a href="{{ url_for('dataset.dataset_training') }}">
 
-        <div class="page-header">
+        <i class="fa-solid fa-database"></i>
 
-            <h1>
+        <span>Dataset Training</span>
+
+    </a>
+
+    <a href="{{ url_for('ml.decision_tree') }}"
+       class="active">
+
+        <i class="fa-solid fa-code-branch"></i>
+
+        <span>Decision Tree</span>
+
+    </a>
+
+    {% endif %}
+
+    <a href="{{ url_for('dataset.dataset_pengguna') }}">
+
+        <i class="fa-solid fa-users"></i>
+
+        <span>Dataset Pengguna</span>
+
+    </a>
+
+    <a href="{{ url_for('prediksi.prediksi') }}">
+
+        <i class="fa-solid fa-brain"></i>
+
+        <span>Prediksi</span>
+
+    </a>
+
+    <a href="{{ url_for('prediksi.hasil') }}">
+
+        <i class="fa-solid fa-chart-column"></i>
+
+        <span>Hasil</span>
+
+    </a>
+
+    <a href="{{ url_for('auth.logout') }}"
+       class="logout-link">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>Logout</span>
+
+    </a>
+
+    <div class="sidebar-status">
+
+        <div class="status-dot"></div>
+
+        <span>Sistem Aktif</span>
+
+    </div>
+
+</aside>
+
+<!-- =========================================
+MAIN
+========================================= -->
+
+<main class="main" id="main">
+
+<!-- =========================================
+TOPBAR
+========================================= -->
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+            class="menu-toggle"
+            onclick="toggleSidebar()">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <div>
+
+            <h3>
                 Decision Tree C4.5
-            </h1>
+            </h3>
 
             <p>
-                Evaluasi Model Klasifikasi
-                Perilaku Konsumtif
+                Evaluasi dan Analisis Model Klasifikasi
             </p>
 
         </div>
 
-        {% if error %}
+    </div>
 
-        <div class="card">
+    <div class="topbar-right">
 
-            <h3>Error</h3>
+        <button
+            id="themeToggle"
+            class="theme-toggle">
 
-            <p>
-                {{ error }}
-            </p>
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+        <div class="live-clock">
+
+            <i class="fa-solid fa-clock"></i>
+
+            <span id="clock">
+                00:00:00
+            </span>
 
         </div>
 
-        {% else %}
+        <div class="live-date">
 
-        <div class="card">
+            <i class="fa-solid fa-calendar"></i>
 
-            <h2>
-                Hasil Evaluasi
-            </h2>
+            <span id="todayDate">
+                Loading...
+            </span>
 
-          <div class="accuracy-wrapper">
+        </div>
 
-            <div class="acc-box testing-only">
+        <div class="user-box">
 
-                <span>
-                    Akurasi Model Decision Tree C4.5
+            <div class="user-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <div class="user-info">
+
+                <span class="user-name">
+
+                    {{ session.get('username','Admin') }}
+
                 </span>
 
-                <h3>
-                    {{ acc_test }}%
-                </h3>
-
-                <p>
-                    Berdasarkan Data Testing
-                </p>
+                <small>
+                    Online
+                </small>
 
             </div>
 
         </div>
-                <div class="card">
+
+    </div>
+
+</header>
+
+<section class="content">
+<!-- =========================================
+WELCOME BANNER
+========================================= -->
+
+<div class="welcome-banner">
+
+    <div class="welcome-left">
+
+        <span class="welcome-badge">
+
+            <i class="fa-solid fa-sparkles"></i>
+
+            Decision Tree C4.5
+
+        </span>
+
+        <h2>
+            Evaluasi Model Klasifikasi
+        </h2>
+
+        <p>
+
+            Analisis performa model Decision Tree C4.5
+            untuk klasifikasi perilaku konsumtif
+            berdasarkan data training dan data testing.
+
+        </p>
+
+    </div>
+
+    <div class="welcome-right">
+
+        <i class="fa-solid fa-code-branch"></i>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+STATISTIK
+========================================= -->
+
+<div class="stats-grid">
+
+    <div class="stat-mini">
+
+        <div class="stat-icon blue">
+
+            <i class="fa-solid fa-bullseye"></i>
+
+        </div>
+
+        <h3>
+            {{ acc_test }}%
+        </h3>
+
+        <p>
+            Akurasi Model
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon green">
+
+            <i class="fa-solid fa-database"></i>
+
+        </div>
+
+        <h3>
+            {{ summary.total_data }}
+        </h3>
+
+        <p>
+            Total Dataset
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon orange">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+        </div>
+
+        <h3>
+            {{ summary.total_train }}
+        </h3>
+
+        <p>
+            Data Latih
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon purple">
+
+            <i class="fa-solid fa-vial"></i>
+
+        </div>
+
+        <h3>
+            {{ summary.total_test }}
+        </h3>
+
+        <p>
+            Data Uji
+        </p>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+HASIL EVALUASI
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
+                Hasil Evaluasi Model
+            </h3>
+
+            <p>
+
+                Tingkat akurasi model berdasarkan
+                proses pengujian menggunakan data testing.
+
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+    </div>
+
+    <div class="accuracy-wrapper">
+
+        <div class="acc-box">
+
+            <span>
+
+                Akurasi Decision Tree C4.5
+
+            </span>
 
             <h2>
+
+                {{ acc_test }}%
+
+            </h2>
+
+            <p>
+
+                Berdasarkan Data Testing
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+RINGKASAN MODEL
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
                 Ringkasan Model
-            </h2>
+            </h3>
 
-            <div class="table-wrapper">
+            <p>
 
-                <table class="table">
+                Informasi umum mengenai model
+                Decision Tree C4.5 yang terbentuk.
 
-                    <thead>
-
-                        <tr>
-
-                            <th>Total Data</th>
-
-                            <th>Data Latih</th>
-
-                            <th>Data Uji</th>
-
-                            <th>Metode</th>
-
-                            <th>Depth</th>
-
-                            <th>Leaf Node</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-
-                            <td>
-                                {{ summary.total_data }}
-                            </td>
-
-                            <td>
-                                {{ summary.total_train }}
-                            </td>
-
-                            <td>
-                                {{ summary.total_test }}
-                            </td>
-
-                            <td>
-                                {{ summary.criterion }}
-                            </td>
-
-                            <td>
-                                {{ summary.max_depth }}
-                            </td>
-
-                            <td>
-                                {{ summary.leaf_nodes }}
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
+            </p>
 
         </div>
 
+        <div class="box-icon">
 
-        <div class="card">
+            <i class="fa-solid fa-circle-info"></i>
 
-            <h2>
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Total Data</th>
+                    <th>Data Latih</th>
+                    <th>Data Uji</th>
+                    <th>Metode</th>
+                    <th>Depth</th>
+                    <th>Leaf Node</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>{{ summary.total_data }}</td>
+
+                    <td>{{ summary.total_train }}</td>
+
+                    <td>{{ summary.total_test }}</td>
+
+                    <td>{{ summary.criterion }}</td>
+
+                    <td>{{ summary.max_depth }}</td>
+
+                    <td>{{ summary.leaf_nodes }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+DISTRIBUSI LABEL
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
                 Distribusi Label
-            </h2>
+            </h3>
 
-            <div class="table-wrapper">
+            <p>
 
-                <table class="table">
+                Jumlah data pada masing-masing
+                kategori perilaku konsumtif.
 
-                    <thead>
-
-                        <tr>
-
-                            <th>Rendah</th>
-
-                            <th>Sedang</th>
-
-                            <th>Tinggi</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-
-                            <td>
-                                {{ distribusi_label['Rendah'] }}
-                            </td>
-
-                            <td>
-                                {{ distribusi_label['Sedang'] }}
-                            </td>
-
-                            <td>
-                                {{ distribusi_label['Tinggi'] }}
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
+            </p>
 
         </div>
 
+        <div class="box-icon">
 
-        <div class="card">
+            <i class="fa-solid fa-chart-pie"></i>
 
-            <h2>
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Rendah</th>
+                    <th>Sedang</th>
+                    <th>Tinggi</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>{{ distribusi_label['Rendah'] }}</td>
+
+                    <td>{{ distribusi_label['Sedang'] }}</td>
+
+                    <td>{{ distribusi_label['Tinggi'] }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<!-- =========================================
+DOWNLOAD SPLITTING
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
                 Download Data Splitting
-            </h2>
+            </h3>
 
             <p>
 
-                Download hasil pembagian
-                data latih dan data uji.
+                Download hasil pembagian data
+                training dan testing dalam format Excel.
 
             </p>
 
-            <a
-                href="{{ url_for('ml.download_splitting') }}"
-                class="btn-download"
-            >
+        </div>
 
-                Download Excel
+        <div class="box-icon">
 
-            </a>
+            <i class="fa-solid fa-file-excel"></i>
 
         </div>
-                <div class="card">
 
-            <h2>
+    </div>
+
+    <a href="{{ url_for('ml.download_splitting') }}"
+       class="btn btn-primary">
+
+        <i class="fa-solid fa-download"></i>
+
+        Download Excel
+
+    </a>
+
+</div>
+
+<!-- =========================================
+DATA LATIH
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
                 Data Latih
-            </h2>
+            </h3>
 
             <p>
-                Total Data :
-                <b>
-                    {{ summary.total_train }}
-                </b>
+
+                Dataset yang digunakan untuk
+                proses pembentukan model C4.5.
+
             </p>
-
-            <div class="table-wrapper">
-
-                <table class="table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>No</th>
-
-                            <th>Intensitas E-Wallet</th>
-
-                            <th>Aktivitas E-Wallet</th>
-
-                            <th>Intensitas Paylater</th>
-
-                            <th>Dampak Paylater</th>
-
-                            <th>Pengaruh Promo</th>
-
-                            <th>Sosial Lingkungan</th>
-
-                            <th>Media Gaya Hidup</th>
-
-                            <th>Kontrol Pengeluaran</th>
-
-                            <th>Kontrol Literasi</th>
-
-                            <th>Status</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for item in data_latih %}
-
-                        <tr>
-
-                            <td>
-                                {{ loop.index }}
-                            </td>
-
-                            <td>
-                                {{ item.intensitas_ewallet }}
-                            </td>
-
-                            <td>
-                                {{ item.aktivitas_ewallet }}
-                            </td>
-
-                            <td>
-                                {{ item.intensitas_paylater }}
-                            </td>
-
-                            <td>
-                                {{ item.dampak_paylater }}
-                            </td>
-
-                            <td>
-                                {{ item.pengaruh_promo }}
-                            </td>
-
-                            <td>
-                                {{ item.sosial_lingkungan }}
-                            </td>
-
-                            <td>
-                                {{ item.media_gayahidup }}
-                            </td>
-
-                            <td>
-                                {{ item.kontrol_pengeluaran }}
-                            </td>
-
-                            <td>
-                                {{ item.kontrol_literasi }}
-                            </td>
-
-                              <td>
-
-                            <span class="
-                            {% if item.status == 'Rendah' %}
-                            badge-rendah
-                            {% elif item.status == 'Sedang' %}
-                            badge-sedang
-                            {% elif item.status == 'Tinggi' %}
-                            badge-tinggi
-                            {% endif %}
-                            ">
-                            {{ item.status }}
-                            </span>
-
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
 
         </div>
 
+        <div class="box-icon">
 
-        <div class="card">
+            <i class="fa-solid fa-graduation-cap"></i>
 
-            <h2>
+        </div>
+
+    </div>
+
+    <div class="data-count">
+
+        <i class="fa-solid fa-database"></i>
+
+        Total Data :
+        <b>{{ summary.total_train }}</b>
+
+    </div>
+
+    <br>
+
+    <div class="table-wrapper">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+                    <th>Intensitas E-Wallet</th>
+                    <th>Aktivitas E-Wallet</th>
+                    <th>Intensitas Paylater</th>
+                    <th>Dampak Paylater</th>
+                    <th>Pengaruh Promo</th>
+                    <th>Sosial Lingkungan</th>
+                    <th>Media Gaya Hidup</th>
+                    <th>Kontrol Pengeluaran</th>
+                    <th>Kontrol Literasi</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in data_latih %}
+
+                <tr>
+
+                    <td>{{ loop.index }}</td>
+
+                    <td>{{ item.intensitas_ewallet }}</td>
+
+                    <td>{{ item.aktivitas_ewallet }}</td>
+
+                    <td>{{ item.intensitas_paylater }}</td>
+
+                    <td>{{ item.dampak_paylater }}</td>
+
+                    <td>{{ item.pengaruh_promo }}</td>
+
+                    <td>{{ item.sosial_lingkungan }}</td>
+
+                    <td>{{ item.media_gayahidup }}</td>
+
+                    <td>{{ item.kontrol_pengeluaran }}</td>
+
+                    <td>{{ item.kontrol_literasi }}</td>
+
+                    <td>
+
+                        <span class="
+                        {% if item.status == 'Rendah' %}
+                        badge badge-rendah
+                        {% elif item.status == 'Sedang' %}
+                        badge badge-sedang
+                        {% elif item.status == 'Tinggi' %}
+                        badge badge-tinggi
+                        {% endif %}
+                        ">
+
+                        {{ item.status }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+DATA UJI
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
                 Data Uji
-            </h2>
+            </h3>
 
             <p>
-                Total Data :
-                <b>
-                    {{ summary.total_test }}
-                </b>
+
+                Dataset yang digunakan untuk
+                proses pengujian model.
+
             </p>
 
-            <div class="table-wrapper">
-
-                <table class="table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>No</th>
-
-                            <th>Intensitas E-Wallet</th>
-
-                            <th>Aktivitas E-Wallet</th>
-
-                            <th>Intensitas Paylater</th>
-
-                            <th>Dampak Paylater</th>
-
-                            <th>Pengaruh Promo</th>
-
-                            <th>Sosial Lingkungan</th>
-
-                            <th>Media Gaya Hidup</th>
-
-                            <th>Kontrol Pengeluaran</th>
-
-                            <th>Kontrol Literasi</th>
-
-                            <th>Status Asli</th>
-
-                            <th>Prediksi</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for item in data_uji %}
-
-                        <tr>
-
-                            <td>
-                                {{ loop.index }}
-                            </td>
-
-                            <td>
-                                {{ item.intensitas_ewallet }}
-                            </td>
-
-                            <td>
-                                {{ item.aktivitas_ewallet }}
-                            </td>
-
-                            <td>
-                                {{ item.intensitas_paylater }}
-                            </td>
-
-                            <td>
-                                {{ item.dampak_paylater }}
-                            </td>
-
-                            <td>
-                                {{ item.pengaruh_promo }}
-                            </td>
-
-                            <td>
-                                {{ item.sosial_lingkungan }}
-                            </td>
-
-                            <td>
-                                {{ item.media_gayahidup }}
-                            </td>
-
-                            <td>
-                                {{ item.kontrol_pengeluaran }}
-                            </td>
-
-                            <td>
-                                {{ item.kontrol_literasi }}
-                            </td>
-
-                           <td>
-
-                            <span class="
-                            {% if item.status == 'Rendah' %}
-                            badge-rendah
-                            {% elif item.status == 'Sedang' %}
-                            badge-sedang
-                            {% elif item.status == 'Tinggi' %}
-                            badge-tinggi
-                            {% endif %}
-                            ">
-                            {{ item.status }}
-                            </span>
-
-                            </td>
-
-                            <td>
-
-                            <span class="
-                            {% if item.prediksi == 'Rendah' %}
-                            badge-rendah
-                            {% elif item.prediksi == 'Sedang' %}
-                            badge-sedang
-                            {% elif item.prediksi == 'Tinggi' %}
-                            badge-tinggi
-                            {% endif %}
-                            ">
-                            {{ item.prediksi }}
-                            </span>
-
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
         </div>
-             <div class="card">
 
-                <h2>Confusion Matrix</h2>
+        <div class="box-icon">
 
-                <pre>{{ cm }}</pre>
-
-            </div>
-
-        <div class="card">
-
-            <h2>
-                Classification Report
-            </h2>
-
-            <div class="table-wrapper">
-
-                <table class="table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Kelas</th>
-
-                            <th>Precision</th>
-
-                            <th>Recall</th>
-
-                            <th>F1 Score</th>
-
-                            <th>Support</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for label, data in report.items() %}
-
-                        <tr>
-
-                            <td>
-                                {{ label }}
-                            </td>
-
-                            <td>
-                                {{ data['precision'] }}
-                            </td>
-
-                            <td>
-                                {{ data['recall'] }}
-                            </td>
-
-                            <td>
-                                {{ data['f1-score'] }}
-                            </td>
-
-                            <td>
-                                {{ data['support'] }}
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
+            <i class="fa-solid fa-vial"></i>
 
         </div>
 
+    </div>
 
-        <div class="card">
+    <div class="data-count">
 
-            <h2>
-                Feature Importance C4.5
-            </h2>
+        <i class="fa-solid fa-database"></i>
 
-            <div class="table-wrapper">
+        Total Data :
+        <b>{{ summary.total_test }}</b>
 
-                <table class="table">
+    </div>
 
-                    <thead>
+    <br>
 
-                        <tr>
+    <div class="table-wrapper">
 
-                            <th>Fitur</th>
+        <table class="table">
 
-                            <th>Gain Ratio</th>
+            <thead>
 
-                        </tr>
+                <tr>
 
-                    </thead>
+                    <th>No</th>
+                    <th>Intensitas E-Wallet</th>
+                    <th>Aktivitas E-Wallet</th>
+                    <th>Intensitas Paylater</th>
+                    <th>Dampak Paylater</th>
+                    <th>Pengaruh Promo</th>
+                    <th>Sosial Lingkungan</th>
+                    <th>Media Gaya Hidup</th>
+                    <th>Kontrol Pengeluaran</th>
+                    <th>Kontrol Literasi</th>
+                    <th>Status Asli</th>
+                    <th>Prediksi</th>
 
-                    <tbody>
+                </tr>
 
-                        {% for item in feature_importance %}
+            </thead>
 
-                        <tr>
+            <tbody>
 
-                            <td>
-                                {{ item.feature }}
-                            </td>
+                {% for item in data_uji %}
 
-                            <td>
-                                {{ item.importance }}
-                            </td>
+                <tr>
 
-                        </tr>
+                    <td>{{ loop.index }}</td>
 
-                        {% endfor %}
+                    <td>{{ item.intensitas_ewallet }}</td>
 
-                    </tbody>
+                    <td>{{ item.aktivitas_ewallet }}</td>
 
-                </table>
+                    <td>{{ item.intensitas_paylater }}</td>
 
-            </div>
+                    <td>{{ item.dampak_paylater }}</td>
+
+                    <td>{{ item.pengaruh_promo }}</td>
+
+                    <td>{{ item.sosial_lingkungan }}</td>
+
+                    <td>{{ item.media_gayahidup }}</td>
+
+                    <td>{{ item.kontrol_pengeluaran }}</td>
+
+                    <td>{{ item.kontrol_literasi }}</td>
+
+                    <td>
+
+                        <span class="
+                        {% if item.status == 'Rendah' %}
+                        badge badge-rendah
+                        {% elif item.status == 'Sedang' %}
+                        badge badge-sedang
+                        {% elif item.status == 'Tinggi' %}
+                        badge badge-tinggi
+                        {% endif %}
+                        ">
+
+                        {{ item.status }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span class="
+                        {% if item.prediksi == 'Rendah' %}
+                        badge badge-rendah
+                        {% elif item.prediksi == 'Sedang' %}
+                        badge badge-sedang
+                        {% elif item.prediksi == 'Tinggi' %}
+                        badge badge-tinggi
+                        {% endif %}
+                        ">
+
+                        {{ item.prediksi }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<!-- =========================================
+CONFUSION MATRIX
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>Confusion Matrix</h3>
+
+            <p>
+                Matriks evaluasi hasil prediksi model.
+            </p>
 
         </div>
-                <div class="card">
 
-            <h2>
-                Rules Decision Tree C4.5
-            </h2>
+        <div class="box-icon">
 
-            <pre class="text-box">
+            <i class="fa-solid fa-table-cells"></i>
+
+        </div>
+
+    </div>
+
+    <pre class="text-box">{{ cm }}</pre>
+
+</div>
+
+<!-- =========================================
+CLASSIFICATION REPORT
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>Classification Report</h3>
+
+            <p>
+                Precision, Recall, F1-Score setiap kelas.
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-chart-simple"></i>
+
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Kelas</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1 Score</th>
+                    <th>Support</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for label, data in report.items() %}
+
+                <tr>
+
+                    <td>{{ label }}</td>
+                    <td>{{ data['precision'] }}</td>
+                    <td>{{ data['recall'] }}</td>
+                    <td>{{ data['f1-score'] }}</td>
+                    <td>{{ data['support'] }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+FEATURE IMPORTANCE
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>Feature Importance C4.5</h3>
+
+            <p>
+                Nilai Gain Ratio setiap atribut.
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-ranking-star"></i>
+
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Fitur</th>
+                    <th>Gain Ratio</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in feature_importance %}
+
+                <tr>
+
+                    <td>{{ item.feature }}</td>
+                    <td>{{ item.importance }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+RULES
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>Rules Decision Tree C4.5</h3>
+
+            <p>
+                Aturan yang terbentuk dari pohon keputusan.
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-list-check"></i>
+
+        </div>
+
+    </div>
+
+    <pre class="text-box">
 
 {{ rule_text }}
 
-            </pre>
+    </pre>
+
+</div>
+
+<!-- =========================================
+TREE IMAGE
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>Pohon Keputusan</h3>
+
+            <p>
+                Visualisasi Decision Tree C4.5.
+            </p>
 
         </div>
 
-         <div class="card">
+        <div class="box-icon">
 
-            <h2>Pohon Keputusan (Gambar)</h2>
-
-            <img
-                src="{{ url_for('static', filename='tree.png') }}"
-                alt="Decision Tree"
-                style="width:100%;max-width:1400px;"
-            >
+            <i class="fa-solid fa-diagram-project"></i>
 
         </div>
 
-        <div class="card">
+    </div>
 
-            <h2>Pohon Keputusan (Text)</h2>
+    <img
+        src="{{ url_for('static', filename='tree.png') }}"
+        alt="Decision Tree"
+        class="tree-image">
 
-            <pre class="text-box">
-        {{ tree_visual }}
-            </pre>
+</div>
 
-        </div>
+<!-- =========================================
+TREE TEXT
+========================================= -->
 
+<div class="box">
 
-        <div class="card">
+    <div class="box-header">
 
-            <h2>
-                Detail Node C4.5
-            </h2>
+        <div>
 
-            <div class="table-wrapper">
+            <h3>Pohon Keputusan (Text)</h3>
 
-                <table class="table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Node</th>
-
-                            <th>Feature</th>
-
-                            <th>Entropy</th>
-
-                            <th>Gain</th>
-
-                            <th>Split Info</th>
-
-                            <th>Gain Ratio</th>
-
-                            <th>Samples</th>
-
-                            <th>Label</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for node in node_details %}
-
-                        <tr>
-
-                            <td>
-                                {{ node.node_id }}
-                            </td>
-
-                            <td>
-                                {{ node.feature }}
-                            </td>
-
-                            <td>
-                                {{ node.entropy }}
-                            </td>
-
-                            <td>
-                                {{ node.gain }}
-                            </td>
-
-                            <td>
-                                {{ node.split_info }}
-                            </td>
-
-                            <td>
-                                {{ node.gain_ratio }}
-                            </td>
-
-                            <td>
-                                {{ node.samples }}
-                            </td>
-
-                            <td>
-                                {{ node.label }}
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
+            <p>
+                Struktur pohon dalam bentuk teks.
+            </p>
 
         </div>
 
-        {% endif %}
+        <div class="box-icon">
 
-    </main>
+            <i class="fa-solid fa-code"></i>
+
+        </div>
+
+    </div>
+
+    <pre class="text-box">
+
+{{ tree_visual }}
+
+    </pre>
+
+</div>
+
+<!-- =========================================
+DETAIL NODE
+========================================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>Detail Node C4.5</h3>
+
+            <p>
+                Informasi entropy, gain ratio dan label tiap node.
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-network-wired"></i>
+
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Node</th>
+                    <th>Feature</th>
+                    <th>Entropy</th>
+                    <th>Gain</th>
+                    <th>Split Info</th>
+                    <th>Gain Ratio</th>
+                    <th>Samples</th>
+                    <th>Label</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for node in node_details %}
+
+                <tr>
+
+                    <td>{{ node.node_id }}</td>
+                    <td>{{ node.feature }}</td>
+                    <td>{{ node.entropy }}</td>
+                    <td>{{ node.gain }}</td>
+                    <td>{{ node.split_info }}</td>
+                    <td>{{ node.gain_ratio }}</td>
+                    <td>{{ node.samples }}</td>
+                    <td>{{ node.label }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+</main>
 
 </div>
 
 <script>
 
+/* ==========================
+SIDEBAR
+========================== */
+
 function toggleSidebar(){
 
-    const sidebar =
-        document.querySelector(
-            ".sidebar"
+    document
+    .getElementById("sidebar")
+    .classList
+    .toggle("sidebar-hidden");
+
+    document
+    .getElementById("main")
+    .classList
+    .toggle("main-full");
+}
+
+/* ==========================
+JAM REALTIME
+========================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    const time =
+        now.toLocaleTimeString(
+            "id-ID"
         );
 
-    sidebar.classList.toggle(
-        "active"
-    );
+    const date =
+        now.toLocaleDateString(
+            "id-ID",
+            {
+                weekday:"long",
+                day:"numeric",
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+    const clock =
+        document.getElementById(
+            "clock"
+        );
+
+    const todayDate =
+        document.getElementById(
+            "todayDate"
+        );
+
+    if(clock)
+        clock.innerHTML = time;
+
+    if(todayDate)
+        todayDate.innerHTML = date;
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+/* ==========================
+DARK MODE
+========================== */
+
+const themeToggle =
+document.getElementById(
+"themeToggle"
+);
+
+const savedTheme =
+localStorage.getItem(
+"theme"
+);
+
+if(savedTheme === "dark"){
+
+    document.body
+    .classList
+    .add("dark-mode");
+
+    if(themeToggle){
+
+        themeToggle.innerHTML =
+        '<i class="fa-solid fa-sun"></i>';
+    }
+}
+
+if(themeToggle){
+
+    themeToggle.addEventListener(
+    "click",
+
+    ()=>{
+
+        document.body
+        .classList
+        .toggle("dark-mode");
+
+        if(
+            document.body
+            .classList
+            .contains("dark-mode")
+        ){
+
+            localStorage.setItem(
+            "theme",
+            "dark"
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-sun"></i>';
+
+        }else{
+
+            localStorage.setItem(
+            "theme",
+            "light"
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-moon"></i>';
+        }
+
+    });
+
 }
 
 </script>
