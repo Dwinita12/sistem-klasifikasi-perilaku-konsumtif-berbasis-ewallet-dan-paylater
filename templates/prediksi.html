@@ -1,190 +1,946 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prediksi | Sistem Konsumtif</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/prediksi.css') }}">
+<title>
+    Prediksi | Sistem Konsumtif
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/prediksi.css') }}">
+
 </head>
 
 <body>
 
 <div class="wrapper">
 
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2>Sistem Konsumtif</h2>
-            <button class="close-sidebar" type="button" onclick="toggleSidebar()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-circle">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+
+                <h2>Sistem Konsumtif</h2>
+
+                <small>Menu Prediksi</small>
+
+            </div>
+
         </div>
 
-        <a href="{{ url_for('dashboard.home') }}">
-            <i class="fa-solid fa-house"></i>
-            <span>Dashboard</span>
-        </a>
+        <button
+            class="close-sidebar"
+            onclick="toggleSidebar()">
 
-        {% if session.get('role') == 'admin' %}
+            <i class="fa-solid fa-xmark"></i>
 
-        <a href="{{ url_for('dataset.dataset_training') }}">
+        </button>
+
+    </div>
+
+    <a href="{{ url_for('dashboard.home') }}">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>Dashboard</span>
+
+    </a>
+
+    {% if session.get('role') == 'admin' %}
+
+    <a href="{{ url_for('dataset.dataset_training') }}">
+
+        <i class="fa-solid fa-database"></i>
+
+        <span>Dataset Training</span>
+
+    </a>
+
+    <a href="{{ url_for('ml.decision_tree') }}">
+
+        <i class="fa-solid fa-code-branch"></i>
+
+        <span>Decision Tree</span>
+
+    </a>
+
+    {% endif %}
+
+    <a href="{{ url_for('dataset.dataset_pengguna') }}">
+
+        <i class="fa-solid fa-users"></i>
+
+        <span>Dataset Pengguna</span>
+
+    </a>
+
+    <a href="{{ url_for('prediksi.prediksi') }}"
+       class="active">
+
+        <i class="fa-solid fa-brain"></i>
+
+        <span>Prediksi</span>
+
+    </a>
+
+    <a href="{{ url_for('prediksi.hasil') }}">
+
+        <i class="fa-solid fa-chart-column"></i>
+
+        <span>Hasil</span>
+
+    </a>
+
+    <a href="{{ url_for('auth.logout') }}"
+       class="logout-link">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>Logout</span>
+
+    </a>
+
+    <div class="sidebar-status">
+
+        <div class="status-dot"></div>
+
+        <span>Sistem Aktif</span>
+
+    </div>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main" id="main">
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+            class="menu-toggle"
+            onclick="toggleSidebar()">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <div>
+
+            <h3>
+                Menu Prediksi
+            </h3>
+
+            <p>
+                Klasifikasi perilaku konsumtif pengguna
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <div class="live-clock">
+
+            <i class="fa-solid fa-clock"></i>
+
+            <span id="clock">
+                00:00:00
+            </span>
+
+        </div>
+
+        <div class="live-date">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+            <span id="todayDate">
+                Loading...
+            </span>
+
+        </div>
+
+        <button
+            id="themeToggle"
+            class="theme-toggle">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+        <div class="user-box">
+
+            <div class="user-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <div class="user-info">
+
+                <span class="user-name">
+
+                    {{ session.get('username','User') }}
+
+                </span>
+
+                <small>
+                    Online
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section class="content">
+
+<!-- ================= WELCOME ================= -->
+
+<div class="welcome-banner">
+
+    <div class="welcome-left">
+
+        <span class="welcome-badge">
+
+            <i class="fa-solid fa-brain"></i>
+
+            Sistem Prediksi C4.5
+
+        </span>
+
+        <h2 id="greeting">
+
+            Selamat Datang
+
+        </h2>
+
+        <p>
+
+            Halaman ini digunakan untuk melakukan
+            prediksi perilaku konsumtif berdasarkan
+            data pengguna yang telah tersimpan
+            pada sistem.
+
+        </p>
+
+    </div>
+
+    <div class="welcome-right">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+    </div>
+
+</div>
+<!-- ================= STATISTIK ================= -->
+
+<div class="stats-grid">
+
+    <div class="stat-mini">
+
+        <div class="stat-icon blue">
+
+            <i class="fa-solid fa-users"></i>
+
+        </div>
+
+        <h3>
+
+            {{ data|length }}
+
+        </h3>
+
+        <p>
+
+            Total Data Pengguna
+
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon green">
+
+            <i class="fa-solid fa-brain"></i>
+
+        </div>
+
+        <h3>
+
+            C4.5
+
+        </h3>
+
+        <p>
+
+            Algoritma Klasifikasi
+
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon orange">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+        </div>
+
+        <h3>
+
+            AI
+
+        </h3>
+
+        <p>
+
+            Prediksi Otomatis
+
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon purple">
+
+            <i class="fa-solid fa-bolt"></i>
+
+        </div>
+
+        <h3>
+
+            Real Time
+
+        </h3>
+
+        <p>
+
+            Proses Cepat
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ================= INFO ================= -->
+
+<div class="dataset-info">
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    <span>
+
+        Klik tombol
+        <b>Prediksi</b>
+        untuk melakukan klasifikasi
+        perilaku konsumtif menggunakan
+        model Decision Tree C4.5.
+
+    </span>
+
+</div>
+
+<!-- ================= DATA PREDIKSI ================= -->
+
+<div class="box reveal">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
+
+                Data Pengguna
+
+            </h3>
+
+            <p>
+
+                Daftar data pengguna yang siap
+                diproses menggunakan algoritma
+                Decision Tree C4.5.
+
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-table"></i>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="table-tools">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama pengguna...">
+
+        </div>
+
+        <div class="data-count">
+
             <i class="fa-solid fa-database"></i>
-            <span>Dataset Training</span>
-        </a>
 
-        <a href="{{ url_for('ml.decision_tree') }}">
-            <i class="fa-solid fa-code-branch"></i>
-            <span>Decision Tree</span>
-        </a>
+            <span>
+
+                {{ data|length }} Data
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+        <table id="prediksiTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+
+                    <th>Nama</th>
+
+                    <th>Intensitas E-Wallet</th>
+
+                    <th>Aktivitas E-Wallet</th>
+
+                    <th>Intensitas Paylater</th>
+
+                    <th>Dampak Paylater</th>
+
+                    <th>Pengaruh Promo</th>
+
+                    <th>Sosial Lingkungan</th>
+
+                    <th>Media & Gaya Hidup</th>
+
+                    <th>Kontrol Pengeluaran</th>
+
+                    <th>Kontrol Literasi</th>
+
+                    <th>Tanggal Input</th>
+
+                    <th>Aksi</th>
+
+                    <th>Hasil</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+{% for d in data %}
+
+<tr>
+
+    <td>
+        {{ loop.index }}
+    </td>
+
+    <td>
+        {{ d.nama if d.nama else '-' }}
+    </td>
+
+    <td>
+        {{ d.intensitas_ewallet }}
+    </td>
+
+    <td>
+        {{ d.aktivitas_ewallet }}
+    </td>
+
+    <td>
+        {{ d.intensitas_paylater }}
+    </td>
+
+    <td>
+        {{ d.dampak_paylater }}
+    </td>
+
+    <td>
+        {{ d.pengaruh_promo }}
+    </td>
+
+    <td>
+        {{ d.sosial_lingkungan }}
+    </td>
+
+    <td>
+        {{ d.media_gayahidup }}
+    </td>
+
+    <td>
+        {{ d.kontrol_pengeluaran }}
+    </td>
+
+    <td>
+        {{ d.kontrol_literasi }}
+    </td>
+
+    <td>
+
+        {% if d.tanggal_input %}
+
+            {{ d.tanggal_input.strftime('%d-%m-%Y %H:%M') }}
+
+        {% else %}
+
+            -
 
         {% endif %}
 
-        <a href="{{ url_for('dataset.dataset_pengguna') }}">
-            <i class="fa-solid fa-users"></i>
-            <span>Dataset Pengguna</span>
+    </td>
+
+    <td>
+
+        <a
+            href="{{ url_for('prediksi.proses_prediksi', id=d.id) }}"
+            class="btn-predict">
+
+            <i class="fa-solid fa-play"></i>
+
+            Prediksi
+
         </a>
 
-        <a href="{{ url_for('prediksi.prediksi') }}" class="active">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>Prediksi</span>
-        </a>
+    </td>
 
-        <a href="{{ url_for('prediksi.hasil') }}">
-            <i class="fa-solid fa-square-poll-vertical"></i>
-            <span>Hasil</span>
-        </a>
+    <td>
 
-        <a href="{{ url_for('auth.logout') }}" class="logout-link">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
-        </a>
-    </aside>
+        {% if d.hasil %}
 
-    <main class="main" id="main">
+            {% if d.hasil.hasil == 'Rendah' %}
 
-        <header class="topbar">
-            <div class="topbar-left">
-                <button class="menu-toggle" type="button" onclick="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
+                <span class="badge badge-rendah">
 
-                <div>
-                    <h3>Menu Prediksi</h3>
-                    <p>Proses data pengguna untuk melihat hasil klasifikasi</p>
-                </div>
-            </div>
+                    <i class="fa-solid fa-circle-check"></i>
 
-            <div class="user-box">
-                <i class="fa-solid fa-user"></i>
-                <span>{{ session.get('username', 'User') }}</span>
-            </div>
-        </header>
+                    Rendah
 
-        <section class="content">
+                </span>
 
-            <div class="box">
-                <div class="box-header">
-                    <div>
-                        <h3>Data Pengguna</h3>
-                        <p>Daftar data pengguna yang siap diproses prediksi</p>
-                    </div>
+            {% elif d.hasil.hasil == 'Sedang' %}
 
-                    <div class="box-icon">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                </div>
+                <span class="badge badge-sedang">
 
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Intensitas Penggunaan E-Wallet</th>
-                                <th>Aktivitas Transaksi E-Wallet</th>
-                                <th>Intensitas Penggunaan Paylater</th>
-                                <th>Dampak Penggunaan Paylater</th>
-                                <th>Pengaruh Promo</th>
-                                <th>Pengaruh Sosial dan Lingkungan</th>
-                                <th>Pengaruh Media Sosial dan Gaya Hidup</th>
-                                <th>Kontrol Pengeluaran</th>
-                                <th>Kontrol dan Literasi Keuangan</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                                <th>Perilaku Konsumtif</th>
-                            </tr>
-                        </thead>
+                    <i class="fa-solid fa-circle-exclamation"></i>
 
-                        <tbody>
-                            {% for d in data %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ d.nama if d.nama else '-' }}</td>
-                                <td>{{ d.intensitas_ewallet }}</td>
-                                <td>{{ d.aktivitas_ewallet }}</td>
-                                <td>{{ d.intensitas_paylater }}</td>
-                                <td>{{ d.dampak_paylater }}</td>
-                                <td>{{ d.pengaruh_promo }}</td>
-                                <td>{{ d.sosial_lingkungan }}</td>
-                                <td>{{ d.media_gayahidup }}</td>
-                                <td>{{ d.kontrol_pengeluaran }}</td>
-                                <td>{{ d.kontrol_literasi }}</td>
+                    Sedang
 
-                                <td>
-                                    {{ d.tanggal_input.strftime('%d-%m-%Y %H:%M') if d.tanggal_input else '-' }}
-                                </td>
+                </span>
 
-                                <td>
-                                    <a href="{{ url_for('prediksi.proses_prediksi', id=d.id) }}" class="btn-predict">
-                                        <i class="fa-solid fa-play"></i>
-                                        Prediksi
-                                    </a>
-                                </td>
+            {% elif d.hasil.hasil == 'Tinggi' %}
 
-                                <td>
-                                    {% if d.hasil %}
-                                        {% if d.hasil.hasil == 'Rendah' %}
-                                            <span class="badge rendah">Rendah</span>
-                                        {% elif d.hasil.hasil == 'Sedang' %}
-                                            <span class="badge sedang">Sedang</span>
-                                        {% elif d.hasil.hasil == 'Tinggi' %}
-                                            <span class="badge konsumtif">Tinggi</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="14" class="empty">
-                                    Belum ada data pengguna
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                <span class="badge badge-tinggi">
 
-            </div>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
 
-        </section>
+                    Tinggi
 
-    </main>
+                </span>
+
+            {% else %}
+
+                -
+
+            {% endif %}
+
+        {% else %}
+
+            <span class="badge badge-default">
+
+                Belum Diprediksi
+
+            </span>
+
+        {% endif %}
+
+    </td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+    <td colspan="14">
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-folder-open"></i>
+
+            <h3>
+
+                Belum Ada Data
+
+            </h3>
+
+            <p>
+
+                Silakan input data pengguna
+                terlebih dahulu melalui menu
+                Dataset Pengguna.
+
+            </p>
+
+        </div>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+</section>
+
+</main>
 
 </div>
 
 <script>
+
+/* ==========================
+   TOGGLE SIDEBAR
+========================== */
+
 function toggleSidebar(){
-    document.getElementById('sidebar').classList.toggle('sidebar-hidden');
-    document.getElementById('main').classList.toggle('main-full');
+
+    document
+    .getElementById("sidebar")
+    .classList
+    .toggle("sidebar-hidden");
+
+    document
+    .getElementById("main")
+    .classList
+    .toggle("main-full");
+
 }
+
+/* ==========================
+   LIVE CLOCK
+========================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    const jam =
+    String(now.getHours())
+    .padStart(2,"0");
+
+    const menit =
+    String(now.getMinutes())
+    .padStart(2,"0");
+
+    const detik =
+    String(now.getSeconds())
+    .padStart(2,"0");
+
+    const clock =
+    document.getElementById(
+    "clock"
+    );
+
+    if(clock){
+
+        clock.innerHTML =
+        `${jam}:${menit}:${detik}`;
+
+    }
+
+}
+
+setInterval(
+updateClock,
+1000
+);
+
+updateClock();
+
+/* ==========================
+   LIVE DATE
+========================== */
+
+const todayDate =
+document.getElementById(
+"todayDate"
+);
+
+if(todayDate){
+
+    const now =
+    new Date();
+
+    const options = {
+
+        weekday:"long",
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+
+    };
+
+    todayDate.innerHTML =
+    now.toLocaleDateString(
+    "id-ID",
+    options
+    );
+
+}
+
+/* ==========================
+   GREETING
+========================== */
+
+const greeting =
+document.getElementById(
+"greeting"
+);
+
+if(greeting){
+
+    const hour =
+    new Date().getHours();
+
+    if(hour < 11){
+
+        greeting.innerHTML =
+        "☀️ Selamat Pagi";
+
+    }
+
+    else if(hour < 15){
+
+        greeting.innerHTML =
+        "🌤️ Selamat Siang";
+
+    }
+
+    else if(hour < 18){
+
+        greeting.innerHTML =
+        "🌇 Selamat Sore";
+
+    }
+
+    else{
+
+        greeting.innerHTML =
+        "🌙 Selamat Malam";
+
+    }
+
+}
+
+/* ==========================
+   DARK MODE
+========================== */
+
+const themeToggle =
+document.getElementById(
+"themeToggle"
+);
+
+const savedTheme =
+localStorage.getItem(
+"theme"
+);
+
+if(savedTheme === "dark"){
+
+    document.body
+    .classList
+    .add("dark-mode");
+
+    if(themeToggle){
+
+        themeToggle.innerHTML =
+        '<i class="fa-solid fa-sun"></i>';
+
+    }
+
+}
+
+if(themeToggle){
+
+    themeToggle.addEventListener(
+    "click",
+
+    ()=>{
+
+        document.body
+        .classList
+        .toggle("dark-mode");
+
+        if(
+            document.body
+            .classList
+            .contains("dark-mode")
+        ){
+
+            localStorage.setItem(
+            "theme",
+            "dark"
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-sun"></i>';
+
+        }
+
+        else{
+
+            localStorage.setItem(
+            "theme",
+            "light"
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-moon"></i>';
+
+        }
+
+    });
+
+}
+
+/* ==========================
+   SEARCH TABLE
+========================== */
+
+const searchInput =
+document.getElementById(
+"searchInput"
+);
+
+if(searchInput){
+
+    searchInput.addEventListener(
+    "keyup",
+
+    function(){
+
+        const keyword =
+        this.value.toLowerCase();
+
+        const rows =
+        document.querySelectorAll(
+        "#prediksiTable tbody tr"
+        );
+
+        rows.forEach(row=>{
+
+            const text =
+            row.innerText
+            .toLowerCase();
+
+            row.style.display =
+
+            text.includes(keyword)
+            ? ""
+            : "none";
+
+        });
+
+    });
+
+}
+
+/* ==========================
+   REVEAL ANIMATION
+========================== */
+
+const reveals =
+document.querySelectorAll(
+".reveal"
+);
+
+function revealElements(){
+
+    reveals.forEach(item=>{
+
+        const top =
+        item.getBoundingClientRect()
+        .top;
+
+        const visible =
+        window.innerHeight - 100;
+
+        if(top < visible){
+
+            item.classList.add(
+            "active"
+            );
+
+        }
+
+    });
+
+}
+
+window.addEventListener(
+"scroll",
+revealElements
+);
+
+revealElements();
+
 </script>
 
 </body>
+
 </html>
