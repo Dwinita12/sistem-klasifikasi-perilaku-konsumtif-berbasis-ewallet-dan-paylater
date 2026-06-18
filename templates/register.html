@@ -1,166 +1,690 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | Sistem Klasifikasi Konsumtif</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Register | Sistem Klasifikasi Konsumtif
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/register.css') }}">
+
 </head>
+
 <body>
 
-    <div class="bg-blur blur-1"></div>
-    <div class="bg-blur blur-2"></div>
+<!-- =========================
+     BACKGROUND
+========================= -->
 
-    <div class="wrapper">
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
 
-        <!-- LEFT SIDE -->
-        <div class="side">
-            <div class="side-badge">Smart Classification System</div>
+<div class="grid-bg"></div>
 
-            <div class="side-image">
-                <img src="{{ url_for('static', filename='img/ewallet.png') }}" alt="Fintech Illustration">
-            </div>
+<!-- =========================
+     DARK MODE
+========================= -->
 
-            <div class="side-content">
-                <h1>Buat Akun Baru</h1>
-                <p>
-                    Daftar untuk mengakses sistem klasifikasi perilaku konsumtif mahasiswa
-                    dan kelola data analisis secara lebih terstruktur, cepat, dan informatif.
-                </p>
-            </div>
+<button
+id="themeToggle"
+class="theme-toggle">
 
-            <div class="side-info">
-                <div class="info-box">
-                    <h4>Metode</h4>
-                    <span>Decision Tree</span>
-                </div>
-                <div class="info-box">
-                    <h4>Data</h4>
-                    <span>E-wallet & Paylater</span>
-                </div>
-                <div class="info-box">
-                    <h4>Output</h4>
-                    <span>Rendah, Sedang, Tinggi</span>
-                </div>
-            </div>
+    <i class="fas fa-moon"></i>
+
+</button>
+
+<!-- =========================
+     WRAPPER
+========================= -->
+
+<div class="login-wrapper">
+
+    <!-- =====================
+         LEFT SIDE
+    ====================== -->
+
+    <div class="login-left">
+
+        <div class="system-badge">
+
+            <i class="fas fa-sparkles"></i>
+
+            Smart Classification System
+
         </div>
 
-        <!-- FORM CARD -->
-        <div class="form-card">
-            <div class="form-header">
-                <h2>Register</h2>
-                <p>Buat akun baru untuk masuk ke sistem.</p>
+        <div class="login-content">
+
+            <h1>
+
+                Buat Akun
+                <span>
+                    Baru
+                </span>
+
+            </h1>
+
+            <p>
+
+                Daftarkan akun Anda untuk
+                mengakses sistem klasifikasi
+                perilaku konsumtif mahasiswa
+                berbasis Decision Tree secara
+                cepat, aman, dan informatif.
+
+            </p>
+
+        </div>
+
+        <div class="preview-card">
+
+            <div class="preview-top">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+            <div class="preview-body">
+
+                <img
+                src="{{ url_for('static', filename='img/ewallet.png') }}"
+                alt="Register Illustration">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================
+         REGISTER CARD
+    ====================== -->
+
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <div class="card-header">
+
+                <div class="login-icon">
+
+                    <i class="fas fa-user-plus"></i>
+
+                </div>
+
+                <h2>
+                    Register
+                </h2>
+
+                <p>
+
+                    Buat akun baru untuk
+                    masuk ke sistem klasifikasi.
+
+                </p>
+
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-container">
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                <div class="flash {{ category }}">
+
+                    {{ message }}
+
                 </div>
+
+                {% endfor %}
+
+            </div>
+
             {% endif %}
             {% endwith %}
+            <!-- =====================
+                 REGISTER FORM
+            ====================== -->
 
-            <form id="registerForm" method="POST" action="{{ url_for('auth.register') }}">
+            <form
+            id="registerForm"
+            method="POST"
+            action="{{ url_for('auth.register') }}"
+            class="login-form">
+
+                <!-- USERNAME -->
 
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Masukkan username" required>
+
+                    <label>
+                        Username
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fas fa-user"></i>
+
+                        <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Masukkan username"
+                        required>
+
+                    </div>
+
                 </div>
+
+                <!-- EMAIL -->
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Masukkan email aktif" required>
-                </div>
 
-                <div class="form-group password-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('password', this)">👁</button>
+                    <label>
+                        Email
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fas fa-envelope"></i>
+
+                        <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Masukkan email aktif"
+                        required>
+
                     </div>
-                    <div id="strength" class="strength-text"></div>
+
                 </div>
 
-                <div class="form-group password-group">
-                    <label for="confirm_password">Konfirmasi Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Ulangi password" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('confirm_password', this)">👁</button>
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fas fa-lock"></i>
+
+                        <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        required>
+
+                        <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="togglePassword('password', this)">
+
+                            <i class="fas fa-eye"></i>
+
+                        </button>
+
                     </div>
+
+                    <div
+                    id="strength"
+                    class="strength-text">
+
+                    </div>
+
                 </div>
 
-                <button type="submit" class="register-btn">Daftar Sekarang</button>
+                <!-- KONFIRMASI PASSWORD -->
+
+                <div class="form-group">
+
+                    <label>
+                        Konfirmasi Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fas fa-shield-halved"></i>
+
+                        <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        placeholder="Ulangi password"
+                        required>
+
+                        <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="togglePassword('confirm_password', this)">
+
+                            <i class="fas fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button
+                type="submit"
+                class="login-btn">
+
+                    <i class="fas fa-user-plus"></i>
+
+                    Daftar Sekarang
+
+                </button>
+
             </form>
 
+            <!-- =====================
+                 DIVIDER
+            ====================== -->
+
             <div class="divider">
-                <span>Akses sistem Klasifikasi</span>
+
+                <span>
+
+                    Sistem Klasifikasi Konsumtif
+
+                </span>
+
             </div>
 
-            <div class="footer-text">
-                Sudah punya akun?
-                <a href="{{ url_for('auth.login') }}">Login sekarang</a>
+            <!-- =====================
+                 MINI FEATURES
+            ====================== -->
+
+            <div class="mini-features">
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-brain"></i>
+
+                    <span>
+                        Decision Tree
+                    </span>
+
+                </div>
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-chart-line"></i>
+
+                    <span>
+                        Analisis Data
+                    </span>
+
+                </div>
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-shield-halved"></i>
+
+                    <span>
+                        Aman
+                    </span>
+
+                </div>
+
             </div>
+
+            <!-- =====================
+                 LOGIN LINK
+            ====================== -->
+
+            <div class="register-text">
+
+                Sudah memiliki akun?
+
+                <a href="{{ url_for('auth.login') }}">
+
+                    Login Sekarang
+
+                </a>
+
+            </div>
+
         </div>
+
+    </div>
+        <!-- =====================
+             FLOATING INFO
+        ====================== -->
+
+        <div class="floating-info info-1">
+
+            <i class="fas fa-user-plus"></i>
+
+            <span>
+                Register Akun
+            </span>
+
+        </div>
+
+        <div class="floating-info info-2">
+
+            <i class="fas fa-envelope"></i>
+
+            <span>
+                Email Aktif
+            </span>
+
+        </div>
+
     </div>
 
-    <script>
-        function togglePassword(fieldId, button){
-            const input = document.getElementById(fieldId);
-            if(input.type === "password"){
-                input.type = "text";
-                button.innerHTML = "🙈";
-            } else {
-                input.type = "password";
-                button.innerHTML = "👁";
-            }
-        }
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
-        const password = document.getElementById("password");
-        const strength = document.getElementById("strength");
+<script>
 
-        password.addEventListener("keyup", function () {
-            const val = password.value;
-            const strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+/* =========================
+   DARK MODE
+========================= */
 
-            if (val.length === 0) {
-                strength.innerHTML = "";
-            } else if (val.length < 8) {
-                strength.innerHTML = "Password terlalu pendek";
-                strength.style.color = "#ef4444";
-            } else if (!strong.test(val)) {
-                strength.innerHTML = "Gunakan huruf besar, kecil, angka, dan simbol";
-                strength.style.color = "#f59e0b";
-            } else {
-                strength.innerHTML = "Password kuat";
-                strength.style.color = "#22c55e";
-            }
-        });
+const themeToggle =
+document.getElementById(
+"themeToggle"
+);
 
-        document.getElementById("registerForm").addEventListener("submit", function (e) {
-            const pass = document.getElementById("password").value;
-            const confirm = document.getElementById("confirm_password").value;
+themeToggle.addEventListener(
+"click",
+()=>{
 
-            const strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+document.body.classList.toggle(
+"dark-mode"
+);
 
-            if (!strong.test(pass)) {
-                alert("Password harus minimal 8 karakter dan mengandung huruf besar, huruf kecil, angka, serta simbol.");
-                e.preventDefault();
-                return;
-            }
+if(
+document.body.classList.contains(
+"dark-mode"
+)
+){
 
-            if (pass !== confirm) {
-                alert("Konfirmasi password tidak sama.");
-                e.preventDefault();
-                return;
-            }
-        });
-    </script>
+themeToggle.innerHTML =
+'<i class="fas fa-sun"></i>';
+
+localStorage.setItem(
+"theme",
+"dark"
+);
+
+}else{
+
+themeToggle.innerHTML =
+'<i class="fas fa-moon"></i>';
+
+localStorage.setItem(
+"theme",
+"light"
+);
+
+}
+
+}
+);
+
+if(
+localStorage.getItem("theme")
+==="dark"
+){
+
+document.body.classList.add(
+"dark-mode"
+);
+
+themeToggle.innerHTML =
+'<i class="fas fa-sun"></i>';
+
+}
+
+/* =========================
+   SHOW PASSWORD
+========================= */
+
+function togglePassword(
+fieldId,
+button
+){
+
+const input =
+document.getElementById(
+fieldId
+);
+
+const icon =
+button.querySelector("i");
+
+if(
+input.type === "password"
+){
+
+input.type = "text";
+
+icon.classList.remove(
+"fa-eye"
+);
+
+icon.classList.add(
+"fa-eye-slash"
+);
+
+}else{
+
+input.type = "password";
+
+icon.classList.remove(
+"fa-eye-slash"
+);
+
+icon.classList.add(
+"fa-eye"
+);
+
+}
+
+}
+
+/* =========================
+   PASSWORD STRENGTH
+========================= */
+
+const password =
+document.getElementById(
+"password"
+);
+
+const strength =
+document.getElementById(
+"strength"
+);
+
+password.addEventListener(
+"keyup",
+()=>{
+
+const value =
+password.value;
+
+const strongPattern =
+/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+if(
+value.length === 0
+){
+
+strength.innerHTML = "";
+
+}
+else if(
+value.length < 8
+){
+
+strength.innerHTML =
+"Password terlalu pendek";
+
+strength.style.color =
+"#ef4444";
+
+}
+else if(
+!strongPattern.test(value)
+){
+
+strength.innerHTML =
+"Gunakan huruf besar, kecil, angka, dan simbol";
+
+strength.style.color =
+"#f59e0b";
+
+}
+else{
+
+strength.innerHTML =
+"Password kuat";
+
+strength.style.color =
+"#22c55e";
+
+}
+
+}
+);
+
+/* =========================
+   VALIDASI FORM
+========================= */
+
+document
+.getElementById(
+"registerForm"
+)
+.addEventListener(
+"submit",
+function(e){
+
+const pass =
+document.getElementById(
+"password"
+).value;
+
+const confirm =
+document.getElementById(
+"confirm_password"
+).value;
+
+const strongPattern =
+/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+if(
+!strongPattern.test(pass)
+){
+
+alert(
+"Password harus minimal 8 karakter dan mengandung huruf besar, huruf kecil, angka, serta simbol."
+);
+
+e.preventDefault();
+
+return;
+}
+
+if(
+pass !== confirm
+){
+
+alert(
+"Konfirmasi password tidak sama."
+);
+
+e.preventDefault();
+
+return;
+}
+
+}
+);
+
+/* =========================
+   INPUT EFFECT
+========================= */
+
+const inputs =
+document.querySelectorAll(
+".input-box input"
+);
+
+inputs.forEach(input=>{
+
+input.addEventListener(
+"focus",
+()=>{
+
+input.parentElement.classList.add(
+"active"
+);
+
+}
+);
+
+input.addEventListener(
+"blur",
+()=>{
+
+if(
+input.value === ""
+){
+
+input.parentElement.classList.remove(
+"active"
+);
+
+}
+
+}
+);
+
+});
+
+/* =========================
+   PAGE ANIMATION
+========================= */
+
+window.addEventListener(
+"load",
+()=>{
+
+document.body.classList.add(
+"loaded"
+);
+
+}
+);
+
+</script>
 
 </body>
 </html>
