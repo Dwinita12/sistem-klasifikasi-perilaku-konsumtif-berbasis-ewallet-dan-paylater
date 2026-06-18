@@ -1,380 +1,1015 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dataset Pengguna | Sistem Konsumtif</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/dataset_pengguna.css') }}">
+<title>
+Dataset Pengguna | Sistem Konsumtif
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/dataset_pengguna.css') }}">
+
 </head>
 
 <body>
 
 <div class="wrapper">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
+<!-- ================= SIDEBAR ================= -->
 
-        <div class="sidebar-header">
-            <h2>Sistem Konsumtif</h2>
+<aside class="sidebar"
+       id="sidebar">
 
-            <button class="close-sidebar" type="button" onclick="toggleSidebar()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    <div class="sidebar-header">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-circle">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Sistem Konsumtif
+                </h2>
+
+                <small>
+                    Dataset Pengguna
+                </small>
+
+            </div>
+
         </div>
 
-        <a href="{{ url_for('dashboard.home') }}">
-            <i class="fa-solid fa-house"></i>
-            <span>Dashboard</span>
-        </a>
+        <button
+            class="close-sidebar"
+            onclick="toggleSidebar()">
 
-        {% if session.get('role') == 'admin' %}
+            <i class="fa-solid fa-xmark"></i>
 
-        <a href="{{ url_for('dataset.dataset_training') }}">
-            <i class="fa-solid fa-database"></i>
-            <span>Dataset Training</span>
-        </a>
+        </button>
 
-        <a href="{{ url_for('ml.decision_tree') }}">
-            <i class="fa-solid fa-code-branch"></i>
-            <span>Decision Tree</span>
-        </a>
+    </div>
 
-        {% endif %}
+    <a href="{{ url_for('dashboard.home') }}">
 
-        <a href="{{ url_for('dataset.dataset_pengguna') }}" class="active">
-            <i class="fa-solid fa-users"></i>
-            <span>Dataset Pengguna</span>
-        </a>
+        <i class="fa-solid fa-house"></i>
 
-        <a href="{{ url_for('prediksi.prediksi') }}">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>Prediksi</span>
-        </a>
+        <span>Dashboard</span>
 
-        <a href="{{ url_for('prediksi.hasil') }}">
-            <i class="fa-solid fa-square-poll-vertical"></i>
-            <span>Hasil</span>
-        </a>
+    </a>
 
-        <a href="{{ url_for('auth.logout') }}" class="logout-link">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
-        </a>
+    {% if session.get('role') == 'admin' %}
 
-    </aside>
+    <a href="{{ url_for('dataset.dataset_training') }}">
 
-    <!-- MAIN -->
-    <main class="main" id="main">
+        <i class="fa-solid fa-database"></i>
 
-        <!-- TOPBAR -->
-        <header class="topbar">
+        <span>Dataset Training</span>
 
-            <div class="topbar-left">
+    </a>
 
-                <button class="menu-toggle" type="button" onclick="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
+    <a href="{{ url_for('ml.decision_tree') }}">
 
-                <div>
-                    <h3>Dataset Pengguna</h3>
-                    <p>Input data pengguna untuk proses klasifikasi</p>
-                </div>
+        <i class="fa-solid fa-code-branch"></i>
 
-            </div>
+        <span>Decision Tree</span>
 
-            <div class="user-box">
+    </a>
+
+    {% endif %}
+
+    <a href="{{ url_for('dataset.dataset_pengguna') }}"
+       class="active">
+
+        <i class="fa-solid fa-users"></i>
+
+        <span>Dataset Pengguna</span>
+
+    </a>
+
+    <a href="{{ url_for('prediksi.prediksi') }}">
+
+        <i class="fa-solid fa-brain"></i>
+
+        <span>Prediksi</span>
+
+    </a>
+
+    <a href="{{ url_for('prediksi.hasil') }}">
+
+        <i class="fa-solid fa-chart-column"></i>
+
+        <span>Hasil</span>
+
+    </a>
+
+    <a href="{{ url_for('auth.logout') }}"
+       class="logout-link">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>Logout</span>
+
+    </a>
+
+    <div class="sidebar-status">
+
+        <div class="status-dot"></div>
+
+        <span>
+            Sistem Aktif
+        </span>
+
+    </div>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main"
+      id="main">
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+            class="menu-toggle"
+            onclick="toggleSidebar()">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <div>
+
+            <h3>
+                Dataset Pengguna
+            </h3>
+
+            <p>
+                Input data responden untuk klasifikasi perilaku konsumtif
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <button
+            id="themeToggle"
+            class="theme-toggle">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+        <div class="live-clock">
+
+            <i class="fa-solid fa-clock"></i>
+
+            <span id="clock">
+                00:00:00
+            </span>
+
+        </div>
+
+        <div class="live-date">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+            <span id="todayDate">
+                Loading...
+            </span>
+
+        </div>
+
+        <div class="user-box">
+
+            <div class="user-avatar">
+
                 <i class="fa-solid fa-user"></i>
-                <span>{{ session.get('username', 'User') }}</span>
-            </div>
-
-        </header>
-
-        <!-- CONTENT -->
-        <section class="content">
-
-            <div class="box">
-
-                <div class="box-header">
-
-                    <div>
-                        <h3>Form Data Pengguna</h3>
-                        <p>Isi seluruh data berikut untuk melakukan prediksi</p>
-                    </div>
-
-                    <div class="box-icon">
-                        <i class="fa-solid fa-user-pen"></i>
-                    </div>
-
-                </div>
-
-                <form method="POST">
-
-                    <!-- IDENTITAS -->
-                 <!-- IDENTITAS -->
-                    <div class="section-title">
-                        IDENTITAS PENGGUNA
-                    </div>
-
-                    <div class="form-grid">
-
-                        <!-- NAMA -->
-                        <div class="form-group full">
-                            <label>Nama Lengkap</label>
-
-                            <input
-                                type="text"
-                                name="nama"
-                                required
-                            >
-                        </div>
-
-                        <!-- JENIS KELAMIN -->
-                        <div class="form-group">
-
-                            <label>Jenis Kelamin</label>
-
-                            <select name="jk" required>
-
-                                <option value="">Pilih</option>
-
-                                <option value="Laki-laki">
-                                    Laki-laki
-                                </option>
-
-                                <option value="Perempuan">
-                                    Perempuan
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- USIA -->
-                        <div class="form-group">
-
-                            <label>Usia</label>
-
-                            <select name="usia" required>
-
-                                <option value="">Pilih</option>
-
-                                <option value="< 20 Tahun">
-                                    < 20 Tahun
-                                </option>
-
-                                <option value="20 - 25 Tahun">
-                                    20 - 25 Tahun
-                                </option>
-
-                                <option value="26 - 30 Tahun">
-                                    26 - 30 Tahun
-                                </option>
-
-                                <option value="31 - 35 Tahun">
-                                    31 - 35 Tahun
-                                </option>
-
-                                <option value="> 35 Tahun">
-                                    > 35 Tahun
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- PEKERJAAN -->
-                        <div class="form-group">
-
-                            <label>Pekerjaan</label>
-
-                            <select name="pekerjaan" required>
-
-                                <option value="">Pilih</option>
-
-                                <option value="Pelajar/Mahasiswa">
-                                    Pelajar / Mahasiswa
-                                </option>
-
-                                <option value="Karyawan Swasta">
-                                    Karyawan Swasta
-                                </option>
-
-                                <option value="Wiraswasta">
-                                    Wiraswasta
-                                </option>
-
-                                <option value="PNS">
-                                    PNS
-                                </option>
-
-                                <option value="Freelancer">
-                                    Freelancer
-                                </option>
-
-                                <option value="Lainnya">
-                                    Lainnya
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- PENDAPATAN -->
-                        <div class="form-group full">
-
-                            <label>Pendapatan per Bulan</label>
-
-                            <select name="pendapatan" required>
-
-                                <option value="">Pilih</option>
-
-                                <option value="< Rp 1.000.000">
-                                    < Rp 1.000.000
-                                </option>
-
-                                <option value="Rp 1.000.000 - Rp 3.000.000">
-                                    Rp 1.000.000 - Rp 3.000.000
-                                </option>
-
-                                <option value="Rp 3.000.000 - Rp 5.000.000">
-                                    Rp 3.000.000 - Rp 5.000.000
-                                </option>
-
-                                <option value="Rp 5.000.000 - Rp 10.000.000">
-                                    Rp 5.000.000 - Rp 10.000.000
-                                </option>
-
-                                <option value="> Rp 10.000.000">
-                                    > Rp 10.000.000
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                    <!-- MACRO -->
-                    {% macro likert(name, text, idx) %}
-                    <div class="form-group" data-number="{{ idx }}">
-
-                        <label>{{ text }}</label>
-
-                        <div class="likert">
-
-                            {% for i in range(1,6) %}
-                            <label>
-
-                                <input
-                                    type="radio"
-                                    name="{{ name }}"
-                                    value="{{ i }}"
-                                    required
-                                >
-
-                                <span>{{ i }}</span>
-
-                            </label>
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
-                    {% endmacro %}
-
-                    <!-- E-WALLET -->
-                    <div class="section-title section-gap">
-                        E-WALLET
-                    </div>
-
-                    {{ likert('x01','Saya menggunakan e-wallet hampir setiap hari',1) }}
-                    {{ likert('x02','Saya memiliki lebih dari satu e-wallet',2) }}
-                    {{ likert('x03','Saya lebih sering menggunakan e-wallet untuk belanja online dibanding keperluan lain.',3) }}
-                    {{ likert('x04','Pengeluaran e-wallet saya di atas Rp500.000 per bulan',4) }}
-                    {{ likert('x05','Saldo e-wallet sering habis sebelum akhir bulan',5) }}
-
-                    <!-- PAYLATER -->
-                    <div class="section-title section-gap">
-                        PAYLATER
-                    </div>
-
-                    {{ likert('x06','Saya rutin menggunakan layanan paylater setiap bulan',6) }}
-                    {{ likert('x07','Saya sering bertransaksi menggunakan paylater dengan nominal cukup besar.',7) }}
-                    {{ likert('x08','Saya pernah menunda pembayaran karena keterbatasan dana.',8) }}
-                    {{ likert('x09','Saya lebih sering membeli barang dengan paylater dibanding tunai.',9) }}
-                    {{ likert('x10','Saya merasa paylater memudahkan dalam membeli barang yang saya inginkan.',10) }}
-
-                    <!-- PROMO -->
-                    <div class="section-title section-gap">
-                        PROMO & SOSIAL
-                    </div>
-
-                    {{ likert('x11','Saya sering membeli barang yang tidak dibutuhkan karena promo.',11) }}
-                    {{ likert('x12','Promo membuat saya mengeluarkan uang lebih banyak dari rencana awal.',12) }}
-                    {{ likert('x13','Teman saya memengaruhi keputusan saya dalam menggunakan e-wallet/paylater.',13) }}
-                    {{ likert('x14','Saya membeli barang karena ikut tren teman.',14) }}
-                    {{ likert('x15','Media sosial mendorong saya untuk belanja.',15) }}
-                    {{ likert('x16','Influencer memengaruhi saya untuk menggunakan e-wallet/paylater.',16) }}
-                    {{ likert('x17','Saya membeli barang demi penampilan/gaya hidup.',17) }}
-
-                    <!-- KONTROL -->
-                    <div class="section-title section-gap">
-                        KONTROL KEUANGAN
-                    </div>
-
-                    {{ likert('x18','Saya sering melebihi anggaran karena e-wallet/paylater.',18) }}
-                    {{ likert('x19','Saya jarang mencatat setiap pengeluaran yang saya lakukan.',19) }}
-                    {{ likert('x20','Saya kesulitan mengendalikan penggunaan paylater.',20) }}
-                    {{ likert('x21','Saya pernah menyesal membeli sesuatu dengan e-wallet/paylater.',21) }}
-                    {{ likert('x22','Saya tidak mengetahui cara mengatur limit penggunaan e-wallet/paylater.',22) }}
-                    {{ likert('x23','Saya pernah belajar tentang literasi keuangan.',23) }}
-
-                    <!-- TARGET -->
-                    <div class="section-title section-gap">
-                        PERILAKU KONSUMTIF
-                    </div>
-
-                    {{ likert('x24','Saya sering membeli barang meski tidak dibutuhkan.',24) }}
-                    {{ likert('x25','E-wallet membuat saya lebih boros dibanding uang tunai.',25) }}
-                    {{ likert('x26','Paylater tidak mendorong saya untuk membeli barang yang lebih mahal.',26) }}
-                    {{ likert('x27','Saya lebih sering belanja online sejak ada paylater.',27) }}
-                    {{ likert('x28','Penggunaan e-wallet/paylater tidak berdampak pada tabungan saya.',28) }}
-
-                    <!-- BUTTON -->
-                    <div class="submit-wrap">
-
-                        <button type="submit" class="btn-primary">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            Prediksi Sekarang
-                        </button>
-
-                    </div>
-
-                </form>
 
             </div>
 
-        </section>
+            <div class="user-info">
 
-    </main>
+                <span class="user-name">
+
+                    {{ session.get('username','User') }}
+
+                </span>
+
+                <small>
+                    Online
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- ================= CONTENT ================= -->
+
+<section class="content">
+
+<!-- ================= WELCOME ================= -->
+
+<div class="welcome-banner">
+
+    <div class="welcome-left">
+
+        <span class="welcome-badge">
+
+            <i class="fa-solid fa-users"></i>
+
+            Dataset Pengguna
+
+        </span>
+
+        <h2 id="greeting">
+            Selamat Datang
+        </h2>
+
+        <p>
+
+            Silakan isi data responden secara lengkap.
+            Data yang dimasukkan akan digunakan
+            untuk proses klasifikasi perilaku
+            konsumtif menggunakan algoritma
+            Decision Tree C4.5.
+
+        </p>
+
+    </div>
+
+    <div class="welcome-right">
+
+        <i class="fa-solid fa-user-pen"></i>
+
+    </div>
+
+</div>
+<!-- ================= STATISTIK ================= -->
+
+<div class="stats-grid">
+
+    <div class="stat-mini">
+
+        <div class="stat-icon blue">
+
+            <i class="fa-solid fa-list-check"></i>
+
+        </div>
+
+        <h3>
+            28
+        </h3>
+
+        <p>
+            Total Pertanyaan
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon green">
+
+            <i class="fa-solid fa-sliders"></i>
+
+        </div>
+
+        <h3>
+            1 - 5
+        </h3>
+
+        <p>
+            Skala Likert
+        </p>
+
+    </div>
+
+    <div class="stat-mini">
+
+        <div class="stat-icon orange">
+
+            <i class="fa-solid fa-code-branch"></i>
+
+        </div>
+
+        <h3>
+            C4.5
+        </h3>
+
+        <p>
+            Decision Tree
+        </p>
+
+    </div>
 
 </div>
 
+<!-- ================= FORM CARD ================= -->
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h3>
+                Form Dataset Pengguna
+            </h3>
+
+            <p>
+
+                Lengkapi seluruh data identitas
+                dan jawaban kuesioner untuk
+                memperoleh hasil klasifikasi
+                perilaku konsumtif.
+
+            </p>
+
+        </div>
+
+        <div class="box-icon">
+
+            <i class="fa-solid fa-user-pen"></i>
+
+        </div>
+
+    </div>
+
+    <form method="POST">
+
+        <!-- IDENTITAS -->
+
+        <div class="section-title">
+
+            <i class="fa-solid fa-id-card"></i>
+
+            IDENTITAS PENGGUNA
+
+        </div>
+
+        <div class="form-grid">
+
+            <!-- NAMA -->
+
+            <div class="form-group full">
+
+                <label>
+
+                    Nama Lengkap
+
+                </label>
+
+                <input
+                    type="text"
+                    name="nama"
+                    placeholder="Masukkan nama lengkap"
+                    required>
+
+            </div>
+
+            <!-- JK -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Jenis Kelamin
+
+                </label>
+
+                <select
+                    name="jk"
+                    required>
+
+                    <option value="">
+                        Pilih Jenis Kelamin
+                    </option>
+
+                    <option value="Laki-laki">
+                        Laki-laki
+                    </option>
+
+                    <option value="Perempuan">
+                        Perempuan
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- USIA -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Usia
+
+                </label>
+
+                <select
+                    name="usia"
+                    required>
+
+                    <option value="">
+                        Pilih Usia
+                    </option>
+
+                    <option value="< 20 Tahun">
+                        < 20 Tahun
+                    </option>
+
+                    <option value="20 - 25 Tahun">
+                        20 - 25 Tahun
+                    </option>
+
+                    <option value="26 - 30 Tahun">
+                        26 - 30 Tahun
+                    </option>
+
+                    <option value="31 - 35 Tahun">
+                        31 - 35 Tahun
+                    </option>
+
+                    <option value="> 35 Tahun">
+                        > 35 Tahun
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- PEKERJAAN -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Pekerjaan
+
+                </label>
+
+                <select
+                    name="pekerjaan"
+                    required>
+
+                    <option value="">
+                        Pilih Pekerjaan
+                    </option>
+
+                    <option value="Pelajar/Mahasiswa">
+                        Pelajar / Mahasiswa
+                    </option>
+
+                    <option value="Karyawan Swasta">
+                        Karyawan Swasta
+                    </option>
+
+                    <option value="Wiraswasta">
+                        Wiraswasta
+                    </option>
+
+                    <option value="PNS">
+                        PNS
+                    </option>
+
+                    <option value="Freelancer">
+                        Freelancer
+                    </option>
+
+                    <option value="Lainnya">
+                        Lainnya
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- PENDAPATAN -->
+
+            <div class="form-group full">
+
+                <label>
+
+                    Pendapatan per Bulan
+
+                </label>
+
+                <select
+                    name="pendapatan"
+                    required>
+
+                    <option value="">
+                        Pilih Pendapatan
+                    </option>
+
+                    <option value="< Rp 1.000.000">
+                        < Rp 1.000.000
+                    </option>
+
+                    <option value="Rp 1.000.000 - Rp 3.000.000">
+                        Rp 1.000.000 - Rp 3.000.000
+                    </option>
+
+                    <option value="Rp 3.000.000 - Rp 5.000.000">
+                        Rp 3.000.000 - Rp 5.000.000
+                    </option>
+
+                    <option value="Rp 5.000.000 - Rp 10.000.000">
+                        Rp 5.000.000 - Rp 10.000.000
+                    </option>
+
+                    <option value="> Rp 10.000.000">
+                        > Rp 10.000.000
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- MACRO -->
+
+        {% macro likert(name, text, idx) %}
+
+        <div class="question-card">
+
+            <div class="question-number">
+
+                {{ idx }}
+
+            </div>
+
+            <div class="question-content">
+
+                <label>
+
+                    {{ text }}
+
+                </label>
+
+                <div class="likert">
+{% for i in range(1,6) %}
+
+<label class="likert-item">
+
+    <input
+        type="radio"
+        name="{{ name }}"
+        value="{{ i }}"
+        required>
+
+    <span>{{ i }}</span>
+
+</label>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+{% endmacro %}
+
+<!-- ================= E-WALLET ================= -->
+
+<div class="section-title section-gap">
+
+    <i class="fa-solid fa-wallet"></i>
+
+    E-WALLET
+
+</div>
+
+{{ likert('x01','Saya menggunakan e-wallet hampir setiap hari',1) }}
+
+{{ likert('x02','Saya memiliki lebih dari satu e-wallet',2) }}
+
+{{ likert('x03','Saya lebih sering menggunakan e-wallet untuk belanja online dibanding keperluan lain.',3) }}
+
+{{ likert('x04','Pengeluaran e-wallet saya di atas Rp500.000 per bulan',4) }}
+
+{{ likert('x05','Saldo e-wallet sering habis sebelum akhir bulan',5) }}
+
+<!-- ================= PAYLATER ================= -->
+
+<div class="section-title section-gap">
+
+    <i class="fa-solid fa-credit-card"></i>
+
+    PAYLATER
+
+</div>
+
+{{ likert('x06','Saya rutin menggunakan layanan paylater setiap bulan',6) }}
+
+{{ likert('x07','Saya sering bertransaksi menggunakan paylater dengan nominal cukup besar.',7) }}
+
+{{ likert('x08','Saya pernah menunda pembayaran karena keterbatasan dana.',8) }}
+
+{{ likert('x09','Saya lebih sering membeli barang dengan paylater dibanding tunai.',9) }}
+
+{{ likert('x10','Saya merasa paylater memudahkan dalam membeli barang yang saya inginkan.',10) }}
+
+<!-- ================= PROMO & SOSIAL ================= -->
+
+<div class="section-title section-gap">
+
+    <i class="fa-solid fa-bullhorn"></i>
+
+    PROMO & SOSIAL
+
+</div>
+
+{{ likert('x11','Saya sering membeli barang yang tidak dibutuhkan karena promo.',11) }}
+
+{{ likert('x12','Promo membuat saya mengeluarkan uang lebih banyak dari rencana awal.',12) }}
+
+{{ likert('x13','Teman saya memengaruhi keputusan saya dalam menggunakan e-wallet atau paylater.',13) }}
+
+{{ likert('x14','Saya membeli barang karena mengikuti tren teman.',14) }}
+
+{{ likert('x15','Media sosial mendorong saya untuk berbelanja.',15) }}
+
+{{ likert('x16','Influencer memengaruhi saya menggunakan e-wallet atau paylater.',16) }}
+
+{{ likert('x17','Saya membeli barang demi menunjang gaya hidup.',17) }}
+
+<!-- ================= KONTROL KEUANGAN ================= -->
+
+<div class="section-title section-gap">
+
+    <i class="fa-solid fa-chart-pie"></i>
+
+    KONTROL KEUANGAN
+
+</div>
+
+{{ likert('x18','Saya sering melebihi anggaran karena penggunaan e-wallet atau paylater.',18) }}
+
+{{ likert('x19','Saya jarang mencatat setiap pengeluaran yang saya lakukan.',19) }}
+
+{{ likert('x20','Saya kesulitan mengendalikan penggunaan paylater.',20) }}
+
+{{ likert('x21','Saya pernah menyesal membeli sesuatu menggunakan e-wallet atau paylater.',21) }}
+
+{{ likert('x22','Saya tidak mengetahui cara mengatur limit penggunaan e-wallet atau paylater.',22) }}
+
+{{ likert('x23','Saya pernah belajar tentang literasi keuangan.',23) }}
+
+<!-- ================= PERILAKU KONSUMTIF ================= -->
+
+<div class="section-title section-gap">
+
+    <i class="fa-solid fa-cart-shopping"></i>
+
+    PERILAKU KONSUMTIF
+
+</div>
+
+{{ likert('x24','Saya sering membeli barang meskipun tidak dibutuhkan.',24) }}
+
+{{ likert('x25','E-wallet membuat saya lebih boros dibanding uang tunai.',25) }}
+
+{{ likert('x26','Paylater tidak mendorong saya membeli barang yang lebih mahal.',26) }}
+
+{{ likert('x27','Saya lebih sering berbelanja online sejak menggunakan paylater.',27) }}
+
+{{ likert('x28','Penggunaan e-wallet atau paylater tidak berdampak pada tabungan saya.',28) }}
+
+<!-- ================= INFO SKALA ================= -->
+
+<div class="info-box">
+
+    <h4>
+
+        <i class="fa-solid fa-circle-info"></i>
+
+        Keterangan Skala Penilaian
+
+    </h4>
+
+    <ul>
+
+        <li><b>1</b> = Sangat Tidak Setuju</li>
+
+        <li><b>2</b> = Tidak Setuju</li>
+
+        <li><b>3</b> = Netral</li>
+
+        <li><b>4</b> = Setuju</li>
+
+        <li><b>5</b> = Sangat Setuju</li>
+
+    </ul>
+
+</div>
+<!-- ================= SUBMIT ================= -->
+
+<div class="submit-wrap">
+
+    <button
+        type="submit"
+        class="btn btn-primary">
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+        Prediksi Sekarang
+
+    </button>
+
+</div>
+
+</form>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
 <script>
+
+/* ==========================
+   TOGGLE SIDEBAR
+========================== */
+
 function toggleSidebar(){
 
-    document.getElementById('sidebar')
-        .classList.toggle('sidebar-hidden');
+    document
+    .getElementById("sidebar")
+    .classList
+    .toggle("sidebar-hidden");
 
-    document.getElementById('main')
-        .classList.toggle('main-full');
+    document
+    .getElementById("main")
+    .classList
+    .toggle("main-full");
+
 }
+
+/* ==========================
+   GREETING
+========================== */
+
+const greeting =
+document.getElementById(
+"greeting"
+);
+
+if(greeting){
+
+    const hour =
+    new Date().getHours();
+
+    if(hour < 11){
+
+        greeting.innerHTML =
+        "☀️ Selamat Pagi";
+
+    }
+
+    else if(hour < 15){
+
+        greeting.innerHTML =
+        "🌤️ Selamat Siang";
+
+    }
+
+    else if(hour < 18){
+
+        greeting.innerHTML =
+        "🌇 Selamat Sore";
+
+    }
+
+    else{
+
+        greeting.innerHTML =
+        "🌙 Selamat Malam";
+
+    }
+
+}
+
+/* ==========================
+   LIVE CLOCK
+========================== */
+
+function updateClock(){
+
+    const now =
+    new Date();
+
+    const jam =
+    String(
+    now.getHours()
+    ).padStart(2,"0");
+
+    const menit =
+    String(
+    now.getMinutes()
+    ).padStart(2,"0");
+
+    const detik =
+    String(
+    now.getSeconds()
+    ).padStart(2,"0");
+
+    const clock =
+    document.getElementById(
+    "clock"
+    );
+
+    if(clock){
+
+        clock.innerHTML =
+        `${jam}:${menit}:${detik}`;
+
+    }
+
+}
+
+setInterval(
+updateClock,
+1000
+);
+
+updateClock();
+
+/* ==========================
+   LIVE DATE
+========================== */
+
+const todayDate =
+document.getElementById(
+"todayDate"
+);
+
+if(todayDate){
+
+    const now =
+    new Date();
+
+    const opsi = {
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+
+    };
+
+    todayDate.innerHTML =
+    now.toLocaleDateString(
+    "id-ID",
+    opsi
+    );
+
+}
+
+/* ==========================
+   DARK MODE
+========================== */
+
+const themeToggle =
+document.getElementById(
+"themeToggle"
+);
+
+const savedTheme =
+localStorage.getItem(
+"theme"
+);
+
+if(savedTheme === "dark"){
+
+    document.body
+    .classList
+    .add("dark-mode");
+
+    if(themeToggle){
+
+        themeToggle.innerHTML =
+        '<i class="fa-solid fa-sun"></i>';
+
+    }
+
+}
+
+if(themeToggle){
+
+    themeToggle.addEventListener(
+    "click",
+
+    ()=>{
+
+        document.body
+        .classList
+        .toggle("dark-mode");
+
+        if(
+            document.body
+            .classList
+            .contains("dark-mode")
+        ){
+
+            localStorage.setItem(
+            "theme",
+            "dark"
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-sun"></i>';
+
+        }
+
+        else{
+
+            localStorage.setItem(
+            "theme",
+            "light"
+            );
+
+            themeToggle.innerHTML =
+            '<i class="fa-solid fa-moon"></i>';
+
+        }
+
+    });
+
+}
+
+/* ==========================
+   ANIMASI RADIO BUTTON
+========================== */
+
+document
+.querySelectorAll(
+'.likert input[type="radio"]'
+)
+.forEach(radio=>{
+
+    radio.addEventListener(
+    "change",
+
+    ()=>{
+
+        const group =
+        document
+        .querySelectorAll(
+        `input[name="${radio.name}"]`
+        );
+
+        group.forEach(item=>{
+
+            item.parentElement
+            .classList
+            .remove("active");
+
+        });
+
+        radio.parentElement
+        .classList
+        .add("active");
+
+    });
+
+});
+
 </script>
 
 </body>
+
 </html>
-```
