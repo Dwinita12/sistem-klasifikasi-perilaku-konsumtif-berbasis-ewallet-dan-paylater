@@ -1,0 +1,272 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hasil Prediksi | Sistem Konsumtif</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/hasil.css') }}">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <h2>Sistem Konsumtif</h2>
+
+            <button class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <a href="{{ url_for('dashboard.home') }}">
+            <i class="fa-solid fa-house"></i>
+            <span>Dashboard</span>
+        </a>
+
+        {% if session.get('role') == 'admin' %}
+
+        <a href="{{ url_for('dataset.dataset_training') }}">
+            <i class="fa-solid fa-database"></i>
+            <span>Dataset Training</span>
+        </a>
+
+        <a href="{{ url_for('ml.decision_tree') }}">
+            <i class="fa-solid fa-code-branch"></i>
+            <span>Decision Tree</span>
+        </a>
+
+        {% endif %}
+
+        <a href="{{ url_for('dataset.dataset_pengguna') }}">
+            <i class="fa-solid fa-users"></i>
+            <span>Dataset Pengguna</span>
+        </a>
+
+        <a href="{{ url_for('prediksi.prediksi') }}">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Prediksi</span>
+        </a>
+
+        <a href="{{ url_for('prediksi.hasil') }}" class="active">
+            <i class="fa-solid fa-square-poll-vertical"></i>
+            <span>Hasil</span>
+        </a>
+
+        <a href="{{ url_for('auth.logout') }}" class="logout-link">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Logout</span>
+        </a>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main" id="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div>
+                    <h3>Hasil Prediksi</h3>
+                    <p>Menampilkan hasil klasifikasi perilaku konsumtif</p>
+                </div>
+
+            </div>
+
+            <div style="display:flex; align-items:center; gap:12px;">
+
+                <a href="{{ url_for('prediksi.prediksi') }}" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Kembali
+                </a>
+
+                <div class="user-box">
+                    <i class="fa-solid fa-user"></i>
+                    <span>{{ session.get('username','User') }}</span>
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <div class="box">
+
+                <div class="box-header">
+
+                    <div>
+                        <h3>Data Hasil Prediksi</h3>
+                        <p>Menampilkan hasil klasifikasi pengguna</p>
+                    </div>
+
+                    <div class="box-icon">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+
+                                <th>No</th>
+                                <th>Nama</th>
+
+                                <th>Intensitas Penggunaan E-Wallet</th>
+                                <th>Aktivitas Transaksi E-Wallet</th>
+                                <th>Intensitas Penggunaan Paylater</th>
+                                <th>Dampak Penggunaan Paylater</th>
+                                <th>Pengaruh Promo</th>
+                                <th>Pengaruh Sosial dan Lingkungan</th>
+                                <th>Pengaruh Media Sosial dan Gaya Hidup</th>
+                                <th>Kontrol Pengeluaran</th>
+                                <th>Kontrol dan Literasi Keuangan</th>
+
+                                <th>Tanggal</th>
+
+                                <th>Hasil</th>
+
+                                <th>Rekomendasi</th>
+
+                                <th>Insight</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for d in data %}
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>{{ d.nama or '-' }}</td>
+
+                                <!-- FIX FIELD -->
+                                <td>{{ d.intensitas_ewallet or '-' }}</td>
+
+                                <td>{{ d.aktivitas_ewallet or '-' }}</td>
+
+                                <td>{{ d.intensitas_paylater or '-' }}</td>
+
+                                <td>{{ d.dampak_paylater or '-' }}</td>
+
+                                <td>{{ d.pengaruh_promo or '-' }}</td>
+
+                                <td>{{ d.sosial_lingkungan or '-' }}</td>
+
+                                <td>{{ d.media_gayahidup or '-' }}</td>
+
+                                <td>{{ d.kontrol_pengeluaran or '-' }}</td>
+
+                                <td>{{ d.kontrol_literasi or '-' }}</td>
+
+                                <!-- TANGGAL -->
+                                <td>
+                                    {{ d.tanggal_input.strftime('%d-%m-%Y %H:%M') if d.tanggal_input else '-' }}
+                                </td>
+
+                                <!-- HASIL -->
+                                <td>
+
+                                    {% if d.hasil == 'Rendah' %}
+
+                                        <span class="badge rendah">
+                                            Rendah
+                                        </span>
+
+                                    {% elif d.hasil == 'Sedang' %}
+
+                                        <span class="badge sedang">
+                                            Sedang
+                                        </span>
+
+                                    {% elif d.hasil == 'Tinggi' %}
+
+                                        <span class="badge konsumtif">
+                                            Tinggi
+                                        </span>
+
+                                    {% else %}
+
+                                        -
+
+                                    {% endif %}
+
+                                </td>
+
+                                <!-- REKOMENDASI -->
+                                <td>
+                                    {{ d.rekomendasi or '-' }}
+                                </td>
+
+                                <!-- INSIGHT -->
+                                <td>
+                                    {{ d.insight or '-' }}
+                                </td>
+
+                            </tr>
+
+                            {% else %}
+
+                            <tr>
+                                <td colspan="15" class="empty">
+                                    Belum ada hasil prediksi
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+
+function toggleSidebar(){
+
+    document
+        .getElementById('sidebar')
+        .classList
+        .toggle('sidebar-hidden');
+
+    document
+        .getElementById('main')
+        .classList
+        .toggle('main-full');
+}
+
+</script>
+
+</body>
+</html>
+```
