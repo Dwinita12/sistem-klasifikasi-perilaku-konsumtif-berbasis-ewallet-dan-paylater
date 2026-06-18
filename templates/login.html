@@ -1,95 +1,521 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Sistem Klasifikasi Konsumtif</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Login | Sistem Klasifikasi Konsumtif
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/login.css') }}">
+
 </head>
+
 <body>
 
-    <div class="bg-blur blur-1"></div>
-    <div class="bg-blur blur-2"></div>
+<!-- =========================
+     BACKGROUND
+========================= -->
 
-    <div class="wrapper">
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
 
-        <!-- LEFT PANEL -->
-        <div class="side">
-            <div class="side-badge">Smart Classification System</div>
+<div class="grid-bg"></div>
 
-            <div class="side-image">
-                <img src="{{ url_for('static', filename='img/ewallet.png') }}" alt="Fintech Illustration">
-            </div>
+<!-- =========================
+     DARK MODE BUTTON
+========================= -->
 
-            <div class="side-content">
-                <h1>Sistem Klasifikasi Konsumtif</h1>
-                <p>
-                    Masuk ke sistem untuk mengelola data, melihat hasil klasifikasi,
-                    dan memantau analisis perilaku konsumtif mahasiswa secara lebih terstruktur.
-                </p>
-            </div>
+<button id="themeToggle"
+class="theme-toggle">
 
-            <div class="side-info">
-                <div class="info-box">
-                    <h4>Metode</h4>
-                    <span>Decision Tree</span>
-                </div>
-                <div class="info-box">
-                    <h4>Analisis</h4>
-                    <span>E-wallet & Paylater</span>
-                </div>
-                <div class="info-box">
-                    <h4>Output</h4>
-                    <span>Rendah, Sedang, Tinggi</span>
-                </div>
-            </div>
+    <i class="fas fa-moon"></i>
+
+</button>
+
+<!-- =========================
+     MAIN WRAPPER
+========================= -->
+
+<div class="login-wrapper">
+
+    <!-- =====================
+         LEFT SIDE
+    ====================== -->
+
+    <div class="login-left">
+
+        <div class="system-badge">
+
+            <i class="fas fa-sparkles"></i>
+
+            Smart Classification System
+
         </div>
 
-        <!-- LOGIN FORM -->
-        <div class="form-card">
-            <div class="form-header">
-                <h2>Selamat Datang</h2>
-                <p>Masuk ke akun Anda untuk melanjutkan ke dashboard sistem.</p>
+        <div class="login-content">
+
+            <h1>
+
+                Sistem Klasifikasi
+                <span>
+                    Perilaku Konsumtif
+                </span>
+
+            </h1>
+
+            <p>
+
+                Platform berbasis Decision Tree
+                untuk menganalisis perilaku konsumtif
+                mahasiswa pengguna E-Wallet dan
+                Paylater secara cepat, objektif,
+                dan akurat.
+
+            </p>
+
+        </div>
+
+        <div class="preview-card">
+
+            <div class="preview-top">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
             </div>
 
-            <form method="POST" action="{{ url_for('auth.login') }}">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Masukkan username" required>
-                </div>
+            <div class="preview-body">
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                </div>
+                <img
+                src="{{ url_for('static', filename='img/ewallet.png') }}"
+                alt="Illustration">
 
-                <div class="form-row">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember">
-                        <span>Ingat saya</span>
-                    </label>
-
-                    <div class="forgot">
-                        <a href="{{ url_for('auth.forgot_password') }}">Lupa Password?</a>
-                    </div>
-                </div>
-
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-
-            <div class="divider">
-                <span>Akses sistem Klasifikasi</span>
             </div>
 
-            <div class="footer-text">
-                Belum punya akun?
-                <a href="{{ url_for('auth.register') }}">Daftar sekarang</a>
-            </div>
         </div>
 
     </div>
+
+    <!-- =====================
+         LOGIN CARD
+    ====================== -->
+
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <div class="card-header">
+
+                <div class="login-icon">
+
+                    <i class="fas fa-user-shield"></i>
+
+                </div>
+
+                <h2>
+                    Selamat Datang
+                </h2>
+
+                <p>
+
+                    Login untuk mengakses
+                    dashboard sistem klasifikasi.
+
+                </p>
+
+            </div>
+            <!-- =====================
+                 LOGIN FORM
+            ====================== -->
+
+            <form
+            method="POST"
+            action="{{ url_for('auth.login') }}"
+            class="login-form">
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fas fa-user"></i>
+
+                        <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Masukkan username"
+                        required>
+
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <div class="input-box password-box">
+
+                        <i class="fas fa-lock"></i>
+
+                        <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        required>
+
+                        <button
+                        type="button"
+                        id="togglePassword"
+                        class="toggle-password">
+
+                            <i class="fas fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- REMEMBER -->
+
+                <div class="form-options">
+
+                    <label class="remember">
+
+                        <input
+                        type="checkbox"
+                        name="remember">
+
+                        <span>
+                            Ingat Saya
+                        </span>
+
+                    </label>
+
+                    <a
+                    href="{{ url_for('auth.forgot_password') }}"
+                    class="forgot-link">
+
+                        Lupa Password?
+
+                    </a>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button
+                type="submit"
+                class="login-btn">
+
+                    <i class="fas fa-right-to-bracket"></i>
+
+                    Login Sekarang
+
+                </button>
+
+            </form>
+
+            <!-- =====================
+                 DIVIDER
+            ====================== -->
+
+            <div class="divider">
+
+                <span>
+                    Sistem Klasifikasi Konsumtif
+                </span>
+
+            </div>
+
+            <!-- =====================
+                 FEATURES
+            ====================== -->
+
+            <div class="mini-features">
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-brain"></i>
+
+                    <span>
+                        Decision Tree
+                    </span>
+
+                </div>
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-chart-line"></i>
+
+                    <span>
+                        Analisis Data
+                    </span>
+
+                </div>
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-shield-halved"></i>
+
+                    <span>
+                        Aman
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- =====================
+                 REGISTER
+            ====================== -->
+
+            <div class="register-text">
+
+                Belum memiliki akun?
+
+                <a href="{{ url_for('auth.register') }}">
+
+                    Daftar Sekarang
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+        <!-- =====================
+             FLOATING INFO
+        ====================== -->
+
+        <div class="floating-info info-1">
+
+            <i class="fas fa-chart-pie"></i>
+
+            <span>
+                Analisis Konsumtif
+            </span>
+
+        </div>
+
+        <div class="floating-info info-2">
+
+            <i class="fas fa-wallet"></i>
+
+            <span>
+                E-Wallet
+            </span>
+
+        </div>
+
+        <div class="floating-info info-3">
+
+            <i class="fas fa-credit-card"></i>
+
+            <span>
+                Paylater
+            </span>
+
+        </div>
+
+    </div>
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+   DARK MODE
+========================= */
+
+const themeToggle =
+document.getElementById(
+"themeToggle"
+);
+
+themeToggle.addEventListener(
+"click",
+()=>{
+
+document.body.classList.toggle(
+"dark-mode"
+);
+
+if(
+document.body.classList.contains(
+"dark-mode"
+)
+){
+
+themeToggle.innerHTML =
+'<i class="fas fa-sun"></i>';
+
+localStorage.setItem(
+"theme",
+"dark"
+);
+
+}else{
+
+themeToggle.innerHTML =
+'<i class="fas fa-moon"></i>';
+
+localStorage.setItem(
+"theme",
+"light"
+);
+
+}
+
+}
+);
+
+if(
+localStorage.getItem("theme")
+==="dark"
+){
+
+document.body.classList.add(
+"dark-mode"
+);
+
+themeToggle.innerHTML =
+'<i class="fas fa-sun"></i>';
+
+}
+
+/* =========================
+   SHOW PASSWORD
+========================= */
+
+const passwordInput =
+document.getElementById(
+"password"
+);
+
+const togglePassword =
+document.getElementById(
+"togglePassword"
+);
+
+togglePassword.addEventListener(
+"click",
+()=>{
+
+const type =
+passwordInput.getAttribute(
+"type"
+);
+
+if(type === "password"){
+
+passwordInput.setAttribute(
+"type",
+"text"
+);
+
+togglePassword.innerHTML =
+'<i class="fas fa-eye-slash"></i>';
+
+}else{
+
+passwordInput.setAttribute(
+"type",
+"password"
+);
+
+togglePassword.innerHTML =
+'<i class="fas fa-eye"></i>';
+
+}
+
+}
+);
+
+/* =========================
+   ANIMATION ON LOAD
+========================= */
+
+window.addEventListener(
+"load",
+()=>{
+
+document.body.classList.add(
+"loaded"
+);
+
+}
+);
+
+/* =========================
+   INPUT EFFECT
+========================= */
+
+const inputs =
+document.querySelectorAll(
+".input-box input"
+);
+
+inputs.forEach(input=>{
+
+input.addEventListener(
+"focus",
+()=>{
+
+input.parentElement.classList.add(
+"active"
+);
+
+}
+);
+
+input.addEventListener(
+"blur",
+()=>{
+
+if(input.value===""){
+
+input.parentElement.classList.remove(
+"active"
+);
+
+}
+
+}
+);
+
+});
+
+</script>
 
 </body>
 </html>
