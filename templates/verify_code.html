@@ -1,93 +1,479 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifikasi Kode | Sistem Klasifikasi Konsumtif</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/verify_code.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Verifikasi Kode |
+Sistem Klasifikasi Konsumtif
+</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/verify_code.css') }}">
+
 </head>
+
 <body>
 
-    <div class="bg-blur blur-1"></div>
-    <div class="bg-blur blur-2"></div>
+<!-- ========================================
+     BACKGROUND
+======================================== -->
 
-    <div class="wrapper">
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
 
-        <!-- LEFT SIDE -->
-        <div class="side">
-            <div class="side-badge">Verification Step</div>
+<div class="grid-bg"></div>
 
-            <div class="side-image">
-                <img src="{{ url_for('static', filename='img/ewallet.png') }}" alt="Verifikasi Kode">
-            </div>
+<!-- ========================================
+     DARK MODE BUTTON
+======================================== -->
 
-            <div class="side-content">
-                <h1>Verifikasi Kode Reset</h1>
-                <p>
-                    Masukkan kode verifikasi yang telah dikirim ke email Anda
-                    untuk melanjutkan proses pemulihan akun dengan aman.
-                </p>
-            </div>
+<button
+id="themeToggle"
+class="theme-toggle">
 
-            <div class="side-info">
-                <div class="info-box">
-                    <h4>Status</h4>
-                    <span>Email Terkirim</span>
-                </div>
-                <div class="info-box">
-                    <h4>Keamanan</h4>
-                    <span>Verifikasi OTP</span>
-                </div>
-                <div class="info-box">
-                    <h4>Langkah</h4>
-                    <span>Reset Password</span>
-                </div>
-            </div>
+    <i class="fas fa-moon"></i>
+
+</button>
+
+<!-- ========================================
+     WRAPPER
+======================================== -->
+
+<div class="login-wrapper">
+
+    <!-- ====================================
+         LEFT SIDE
+    ===================================== -->
+
+    <div class="login-left">
+
+        <div class="system-badge">
+
+            <i class="fas fa-shield-halved"></i>
+
+            Verification Step
+
         </div>
 
-        <!-- FORM CARD -->
-        <div class="form-card">
-            <div class="form-header">
-                <h2>Verifikasi Kode</h2>
-                <p>Masukkan kode yang dikirim ke email Anda.</p>
+        <div class="login-content">
+
+            <h1>
+
+                Verifikasi
+                <span>Kode</span>
+
+                Reset Akun
+
+            </h1>
+
+            <p>
+
+                Masukkan kode verifikasi yang
+                telah dikirim ke email Anda
+                untuk melanjutkan proses
+                pemulihan akun dengan aman
+                dan cepat.
+
+            </p>
+
+        </div>
+
+        <div class="preview-card">
+
+            <div class="preview-top">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+            <div class="preview-body">
+
+                <img
+                src="{{ url_for('static', filename='img/ewallet.png') }}"
+                alt="Verification">
+
+            </div>
+
+        </div>
+
+        <div class="floating-info info-1">
+
+           <i class="fas fa-envelope"></i>
+
+            Email Terkirim
+
+        </div>
+
+        <div class="floating-info info-2">
+
+            <i class="fas fa-key"></i>
+
+            Kode OTP Aktif
+
+        </div>
+
+    </div>
+
+    <!-- ====================================
+         RIGHT SIDE
+    ===================================== -->
+
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <div class="card-header">
+
+            <div class="login-icon">
+
+                <i class="fas fa-shield-halved"></i>
+
+            </div>
+
+                <h2>
+                    Verifikasi Kode
+                </h2>
+
+                <p>
+
+                    Masukkan kode OTP yang
+                    dikirim ke email Anda.
+
+                </p>
+
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-container">
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                <div class="flash {{ category }}">
+
+                    {{ message }}
+
                 </div>
+
+                {% endfor %}
+
+            </div>
+
             {% endif %}
             {% endwith %}
+            <!-- ====================================
+                 VERIFY FORM
+            ===================================== -->
 
-            <form method="POST" action="{{ url_for('auth.verify') }}">
+            <form
+            method="POST"
+            action="{{ url_for('auth.verify') }}"
+            class="login-form">
 
                 <div class="form-group">
-                    <label for="otp">Kode Verifikasi</label>
-                    <input type="text" id="otp" name="otp" placeholder="Masukkan kode OTP" maxlength="6" required>
+
+                    <label>
+                        Kode Verifikasi
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fas fa-key"></i>
+
+                        <input
+                        type="text"
+                        id="otp"
+                        name="otp"
+                        placeholder="Masukkan kode OTP"
+                        maxlength="6"
+                        required>
+
+                    </div>
+
                 </div>
 
-                <button type="submit" class="submit-btn">Verifikasi</button>
+                <button
+                type="submit"
+                class="login-btn">
+
+                    <i class="fas fa-check-circle"></i>
+
+                    Verifikasi Kode
+
+                </button>
+
             </form>
 
+            <!-- ====================================
+                 DIVIDER
+            ===================================== -->
+
             <div class="divider">
-                <span>Tidak menerima kode?</span>
+
+                <span>
+
+                    Tidak menerima kode?
+
+                </span>
+
             </div>
 
-            <div class="footer-text">
-                <a href="{{ url_for('auth.forgot_password') }}">Kirim ulang kode</a>
-                <span>•</span>
-                <a href="{{ url_for('auth.login') }}">Kembali ke Login</a>
+            <!-- ====================================
+                 MINI FEATURES
+            ===================================== -->
+
+            <div class="mini-features">
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-envelope"></i>
+
+                    <span>
+                        Email
+                    </span>
+
+                </div>
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-shield-halved"></i>
+
+                    <span>
+                        Aman
+                    </span>
+
+                </div>
+
+                <div class="mini-feature">
+
+                    <i class="fas fa-bolt"></i>
+
+                    <span>
+                        Cepat
+                    </span>
+
+                </div>
+
             </div>
+
+            <!-- ====================================
+                 FOOTER LINK
+            ===================================== -->
+
+            <div class="register-text">
+
+                <a href="{{ url_for('auth.forgot_password') }}">
+
+                    Kirim Ulang Kode
+
+                </a>
+
+                &nbsp;•&nbsp;
+
+                <a href="{{ url_for('auth.login') }}">
+
+                    Kembali ke Login
+
+                </a>
+
+            </div>
+
         </div>
 
     </div>
+
+</div>
+<!-- ========================================
+     JAVASCRIPT
+======================================== -->
+
+<script>
+
+/* ========================================
+   PAGE LOAD ANIMATION
+======================================== */
+
+window.addEventListener("load",()=>{
+
+    document.body.classList.add(
+        "loaded"
+    );
+
+});
+
+/* ========================================
+   DARK MODE
+======================================== */
+
+const themeToggle =
+document.getElementById(
+    "themeToggle"
+);
+
+themeToggle.addEventListener(
+"click",
+()=>{
+
+    document.body.classList.toggle(
+        "dark-mode"
+    );
+
+    if(
+        document.body.classList.contains(
+            "dark-mode"
+        )
+    ){
+
+        themeToggle.innerHTML =
+        '<i class="fas fa-sun"></i>';
+
+        localStorage.setItem(
+            "theme",
+            "dark"
+        );
+
+    }else{
+
+        themeToggle.innerHTML =
+        '<i class="fas fa-moon"></i>';
+
+        localStorage.setItem(
+            "theme",
+            "light"
+        );
+
+    }
+
+});
+
+/* ========================================
+   LOAD SAVED THEME
+======================================== */
+
+if(
+    localStorage.getItem(
+        "theme"
+    ) === "dark"
+){
+
+    document.body.classList.add(
+        "dark-mode"
+    );
+
+    themeToggle.innerHTML =
+    '<i class="fas fa-sun"></i>';
+
+}
+
+/* ========================================
+   INPUT EFFECT
+======================================== */
+
+const inputs =
+document.querySelectorAll(
+".input-box input"
+);
+
+inputs.forEach(input=>{
+
+    input.addEventListener(
+    "focus",
+    ()=>{
+
+        input.parentElement.classList.add(
+            "active"
+        );
+
+    });
+
+    input.addEventListener(
+    "blur",
+    ()=>{
+
+        if(
+            input.value === ""
+        ){
+
+            input.parentElement.classList.remove(
+                "active"
+            );
+
+        }
+
+    });
+
+});
+
+/* ========================================
+   OTP NUMBER ONLY
+======================================== */
+
+const otpInput =
+document.getElementById(
+    "otp"
+);
+
+if(otpInput){
+
+    otpInput.addEventListener(
+    "input",
+    function(){
+
+        this.value =
+        this.value.replace(
+            /[^0-9]/g,
+            ""
+        );
+
+    });
+
+}
+
+/* ========================================
+   BUTTON LOADING
+======================================== */
+
+const form =
+document.querySelector(
+".login-form"
+);
+
+if(form){
+
+    form.addEventListener(
+    "submit",
+    ()=>{
+
+        const btn =
+        document.querySelector(
+            ".login-btn"
+        );
+
+        btn.innerHTML =
+
+        '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
+
+        btn.disabled = true;
+
+    });
+
+}
+
+</script>
 
 </body>
 </html>
